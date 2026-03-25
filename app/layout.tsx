@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { Roboto } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import { ThemeToggleProvider } from "./theme";
+import Navbar from "./navbar/page";
+import Footer from "./footer/page";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,11 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={roboto.variable}>
+      <body className="min-h-full flex flex-col">
+        <AppRouterCacheProvider>
+          <ThemeToggleProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </ThemeToggleProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }
