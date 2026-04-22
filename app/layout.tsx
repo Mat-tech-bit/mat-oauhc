@@ -17,6 +17,7 @@ import "@fontsource/roboto/700.css";
 import { ThemeToggleProvider } from "./theme";
 import Navbar from "./navbar/page";
 import Footer from "./footer/page";
+import { AuthProvider } from "@/firebase/authcontext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,7 +35,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeToggleProvider>
             <Navbar />
-            {children}
+            <AuthProvider>{children}</AuthProvider>
             <Footer />
           </ThemeToggleProvider>
         </AppRouterCacheProvider>

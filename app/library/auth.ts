@@ -1,65 +1,33 @@
-import { auth, db } from "@/firebase/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
+import { auth, db } from "@/firebase/firebasefile";
+import { 
+  createUserWithEmailAndPassword, 
   sendPasswordResetEmail,
-  User,
-  UserProfile
+  signOut
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { UserProfile } from "@/app/types/user";
+import { doc, setDoc } from "firebase/firestore";
 
-// REGISTER
 export const registerUser = async (
-  email: string,
-  password: string,
-  data: UserProfile
-): Promise<void> => {
-  const userCredential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-
+  email: string, 
+  pass: string, 
+  profileData: Omit<UserProfile, 'uid' | 'email' | 'role'>
+) => {
+  const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
   const user = userCredential.user;
 
-  await setDoc(doc(db, "users", user.uid), data);
+  // Set initial profile with role: 'student'
+  await setDoc(doc(db, "users", user.uid), {
+    ...profileData,
+    uid: user.uid,
+    email: email,
+    role: 'student'
+  });
 };
 
-// LOGIN
-export const loginUser = async (
-  email: string,
-  password: string
-): Promise<User> => {
-  const userCredential = await signInWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-
-  return userCredential.user;
-};
-
-// GET USER DATA
-export const getUserData = async (
-  uid: string
-): Promise<UserProfile> => {
-  const docRef = doc(db, "users", uid);
-  const snap = await getDoc(docRef);
-
-  if (!snap.exists()) {
-    throw new Error("User not found");
-  }
-
-  return snap.data() as UserProfile;
-};
-
-// LOGOUT
-export const logoutUser = async (): Promise<void> => {
-  await signOut(auth);
-};
-
-// FORGOT PASSWORD
-export const resetPassword = async (email: string): Promise<void> => {
+export const resetPassword = async (email: string) => {
   await sendPasswordResetEmail(auth, email);
+};
+
+export const logoutUser = async () => {
+  await signOut(auth);
 };

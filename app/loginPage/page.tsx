@@ -1,49 +1,65 @@
 "use client";
+import React, { useState } from 'react';
+import { TextField, Button, Box, Typography, Container, Paper, Alert, CircularProgress } from '@mui/material';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Paper, FormControlLabel, Checkbox } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { loginUser } from "../library/auth";
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { auth } from '@/firebase/firebasefile';
+import { resetPassword } from '../library/auth';
 
-const LoginPage = () => {
-  const router = useRouter();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const res = await loginUser(formData.email, formData.password);
-    setLoading(false);
+    setError('');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/dashboard');
+    } catch (err: unknown) {
+      setError("Failed to login. Check credentials.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    if (res.success && res.user) {
-      router.push(`/dashBoard?uid=${res.user.uid}`);
-    } else {
-      alert('Error: ' + res.error);
+  const handleForgotPassword = async () => {
+    if (!email) return setError("Enter your email first");
+    try {
+      await resetPassword(email);
+      setMessage("Password reset email sent!");
+    } catch (err) {
+      setError("Error sending reset email.");
     }
   };
 
   return (
-    <Box sx={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#f5f5f5" }}>
-      <Paper elevation={3} sx={{ padding: 4, width: 350 }}>
-        <Typography variant="h5" mb={2} textAlign="center">Sign In</Typography>
-
-        <form onSubmit={handleSubmit}>
-          <TextField fullWidth label="Email" name="email" value={formData.email} onChange={handleChange} margin="normal" required />
-          <TextField fullWidth label="Password" name="password" type="password" value={formData.password} onChange={handleChange} margin="normal" required />
-
-          <FormControlLabel control={<Checkbox />} label="Remember Me" />
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-            {loading ? "Signing in..." : "Sign In"}
-          </Button>
-        </form>
-      </Paper>
-    </Box>
+    <Container maxWidth="xs">
+      <Box sx={{ mt: 8 }}>
+        <Paper sx={{ p: 4 }}>
+          <Typography variant="h5" align="center" gutterBottom>Login</Typography>
+          {error && <Alert severity="error">{error}</Alert>}
+          {message && <Alert severity="success">{message}</Alert>}
+          <form onSubmit={handleLogin}>
+            <TextField fullWidth margin="normal" label="Email" onChange={(e) => setEmail(e.target.value)} />
+            <TextField fullWidth margin="normal" label="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
+            <Button fullWidth variant="contained" type="submit" disabled={loading} sx={{ mt: 2 }}>
+              {loading ? <CircularProgress size={24} /> : "Login"}
+            </Button>
+          </form>
+          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+            <Button size="small" onClick={handleForgotPassword}>Forgot Password?</Button>
+            <Link href="/registrationPage">Create Account</Link>
+          </Box>
+        </Paper>
+      </Box>
+    </Container>
   );
-};
-
-export default LoginPage;
+}
