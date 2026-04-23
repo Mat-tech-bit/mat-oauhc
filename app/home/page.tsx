@@ -85,7 +85,7 @@ const HomePage = () => {
         </Box>
         {/* registration and login button */}
         <Box sx={{ display: "flex", gap: 2, flexDirection: "row" }}>
-          <Button component={Link} href="/registrationPage" sx={{ bgcolor: "#1b70e0", color: "white" }}>
+          <Button component={Link} href="/registrationpage" sx={{ bgcolor: "#1b70e0", color: "white" }}>
             Student Registration
           </Button>
 
@@ -96,7 +96,7 @@ const HomePage = () => {
               border: "2px solid #1b70e0",
             }}
             component={Link}
-            href="/loginPage"
+            href="/loginpage"
           >
             Portal Login
           </Button>

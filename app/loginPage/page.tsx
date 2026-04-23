@@ -56,7 +56,7 @@ export default function LoginPage() {
           </form>
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
             <Button size="small" onClick={handleForgotPassword}>Forgot Password?</Button>
-            <Link href="/registrationPage">Create Account</Link>
+            <Link href="/registrationpage">Create Account</Link>
           </Box>
         </Paper>
       </Box>

@@ -1,6 +1,5 @@
-export interface UserProfile {
+export interface StudentProfile {
   uid: string;
-  email: string;
   fullName: string;
   matricNumber: string;
   department: string;
@@ -10,5 +9,7 @@ export interface UserProfile {
   bloodGroup: string;
   emergencyContact: string;
   medicalHistory: string;
-  role: 'student' | 'admin';
+  email: string;
+  role: "student" | "admin";
+  createdAt: Date;
 }

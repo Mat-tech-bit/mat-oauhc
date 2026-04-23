@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '../library/auth';
+import { StudentProfile } from '../types/user';
 
 export default function RegistrationForm() {
   const router = useRouter();
@@ -45,10 +46,17 @@ export default function RegistrationForm() {
     const { email, password, ...profileData } = formData;
 
     try {
-      await registerUser(email, password, profileData);
+      await registerUser(
+  email,
+  password,
+  profileData as Omit<
+    StudentProfile,
+    "uid" | "email" | "role" | "createdAt"
+  >
+);
       setLoading(false);
       alert('Registration successful! Please login.');
-      router.push('/loginPage'); 
+      router.push('/loginpage'); 
     } catch (err: unknown) {
       setLoading(false);
       if (err instanceof Error) {

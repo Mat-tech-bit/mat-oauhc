@@ -1,45 +1,104 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { UserProfile } from '@/app/types/user';
-import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from './firebasefile';
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+
+import {
+  User,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { StudentProfile } from "@/app/types/user";
+import { auth } from "./firebasefile";
+import { getUserProfile } from "@/app/library/auth";
+
 
 interface AuthContextType {
   user: User | null;
-  profile: UserProfile | null;
+  profile: StudentProfile | null;
   loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, profile: null, loading: true });
+const AuthContext =
+  createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+export const useAuth =
+  (): AuthContextType => {
+
+    const context =
+      useContext(AuthContext);
+
+    if (!context) {
+      throw new Error(
+        "useAuth must be used inside AuthProvider"
+      );
+    }
+
+    return context;
+  };
+
+export const AuthProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+
+  const [user, setUser] =
+    useState<User | null>(null);
+
+  const [profile, setProfile] =
+    useState<StudentProfile | null>(null);
+
+  const [loading, setLoading] =
+    useState<boolean>(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        const docRef = doc(db, "users", firebaseUser.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setProfile(docSnap.data() as UserProfile);
+
+    const unsubscribe =
+      onAuthStateChanged(
+        auth,
+        async (firebaseUser) => {
+
+          if (firebaseUser) {
+
+            setUser(firebaseUser);
+
+            const userProfile =
+              await getUserProfile(
+                firebaseUser.uid
+              );
+
+            setProfile(userProfile);
+
+          } else {
+
+            setUser(null);
+            setProfile(null);
+
+          }
+
+          setLoading(false);
+
         }
-      } else {
-        setProfile(null);
-      }
-      setLoading(false);
-    });
+      );
+
     return () => unsubscribe();
+
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        profile,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

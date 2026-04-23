@@ -1,33 +1,121 @@
-import { auth, db } from "@/firebase/firebasefile";
-import { 
-  createUserWithEmailAndPassword, 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  signOut
+  signOut,
+  UserCredential,
 } from "firebase/auth";
-import { UserProfile } from "@/app/types/user";
-import { doc, setDoc } from "firebase/firestore";
+
+import {
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { StudentProfile } from "../types/user";
+import { auth, db } from "@/firebase/firebasefile";
+
+
 
 export const registerUser = async (
-  email: string, 
-  pass: string, 
-  profileData: Omit<UserProfile, 'uid' | 'email' | 'role'>
-) => {
-  const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+  email: string,
+  password: string,
+  profileData: Omit<
+    StudentProfile,
+    "uid" | "email" | "role" | "createdAt"
+  >
+): Promise<void> => {
+
+  console.log("Starting registration...");
+
+  const userCredential: UserCredential =
+    await createUserWithEmailAndPassword(
+      auth,
+      email.trim(),
+      password
+    );
+
   const user = userCredential.user;
 
-  // Set initial profile with role: 'student'
-  await setDoc(doc(db, "users", user.uid), {
-    ...profileData,
+  console.log("Auth created:", user.uid);
+
+  const profile: StudentProfile = {
+
     uid: user.uid,
-    email: email,
-    role: 'student'
-  });
+    email: email.trim(),
+
+    role: "student",
+
+    createdAt: new Date(),
+
+    ...profileData,
+
+  };
+
+  console.log("Saving profile...");
+
+  await setDoc(
+    doc(db, "students", user.uid),
+    {
+      ...profile,
+      createdAt: serverTimestamp(),
+    }
+  );
+
+  console.log("Profile saved successfully");
+
 };
 
-export const resetPassword = async (email: string) => {
-  await sendPasswordResetEmail(auth, email);
+export const loginUser = async (
+  email: string,
+  password: string
+): Promise<void> => {
+
+  await signInWithEmailAndPassword(
+    auth,
+    email.trim(),
+    password
+  );
+
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async (): Promise<void> => {
+
   await signOut(auth);
+
+};
+
+export const resetPassword = async (
+  email: string
+): Promise<void> => {
+
+  await sendPasswordResetEmail(
+    auth,
+    email.trim()
+  );
+
+};
+
+export const getUserProfile = async (
+  uid: string
+): Promise<StudentProfile | null> => {
+
+  const docRef =
+    doc(db, "students", uid);
+
+  const snapshot =
+    await getDoc(docRef);
+
+  if (!snapshot.exists()) {
+
+    console.log("Profile not found");
+
+    return null;
+
+  }
+
+  console.log("Profile loaded");
+
+  return snapshot.data() as StudentProfile;
+
 };

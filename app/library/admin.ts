@@ -1,16 +1,27 @@
+import {
+  collection,
+  getDocs,
+} from "firebase/firestore";
+import { StudentProfile } from "../types/user";
 import { db } from "@/firebase/firebasefile";
-import { UserProfile } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
 
-export const getAllStudents = async (): Promise<UserProfile[]> => {
-  const usersRef = collection(db, "users");
-  const q = query(usersRef, where("role", "==", "student"));
-  const querySnapshot = await getDocs(q);
-  
-  const students: UserProfile[] = [];
-  querySnapshot.forEach((doc) => {
-    students.push(doc.data() as UserProfile);
-  });
-  
-  return students;
+
+
+export const getAllStudents =
+  async (): Promise<StudentProfile[]> => {
+
+    const querySnapshot =
+      await getDocs(collection(db, "students"));
+
+    const students: StudentProfile[] = [];
+
+    querySnapshot.forEach((doc) => {
+
+      students.push(
+        doc.data() as StudentProfile
+      );
+
+    });
+
+    return students;
 };
