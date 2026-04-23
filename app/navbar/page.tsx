@@ -215,10 +215,10 @@ export default function Navbar() {
           </Box>
 
           <Box>
-            <Button component={Link} href="/loginPage" sx={{ mr: 1 }} variant="contained">
+            <Button component={Link} href="/loginpage" sx={{ mr: 1 }} variant="contained">
               Login
             </Button>
-            <Button component={Link} href="/registrationPage" variant="contained">Register</Button>
+            <Button component={Link} href="/registrationpage" variant="contained">Register</Button>
           </Box>
         </Toolbar>
       )}
