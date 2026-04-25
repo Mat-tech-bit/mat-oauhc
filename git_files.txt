@@ -1,0 +1,17 @@
+﻿app/admin/page.tsx
+app/dashBoard/page.tsx
+app/favicon.ico
+app/features/page.tsx
+app/footer/page.tsx
+app/globals.css
+app/hero/page.tsx
+app/home/page.tsx
+app/layout.tsx
+app/library/admin.ts
+app/library/auth.ts
+app/loginPage/page.tsx
+app/navbar/page.tsx
+app/page.tsx
+app/registrationPage/page.tsx
+app/theme.tsx
+app/types/user.ts

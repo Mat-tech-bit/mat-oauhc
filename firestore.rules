@@ -2,13 +2,29 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Match any document in the 'users' collection
+    // Users Collection (Legacy support if still needed)
     match /users/{userId} {
-      // Allow users to read and write their own profile document
       allow read, write: if request.auth != null && request.auth.uid == userId;
-      
-      // Allow admins to read all user profiles (optional, if you implement admin functionality)
-      // allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+    
+    // Students Collection
+    match /students/{studentId} {
+      allow read, write: if request.auth != null && request.auth.uid == studentId;
+    }
+
+    // Appointments Collection
+    match /appointments/{appointmentId} {
+      // allow users to read their own appointments
+      allow read: if request.auth != null && resource.data.studentId == request.auth.uid;
+      // allow create if they are setting themselves as the student
+      allow create: if request.auth != null && request.resource.data.studentId == request.auth.uid;
+      // allow update/delete if they own the appointment
+      allow update, delete: if request.auth != null && resource.data.studentId == request.auth.uid;
+    }
+
+    // Prescriptions Collection
+    match /prescriptions/{prescriptionId} {
+      allow read: if request.auth != null && resource.data.studentId == request.auth.uid;
     }
   }
 }

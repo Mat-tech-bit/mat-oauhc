@@ -12,18 +12,18 @@ import {
   getDoc,
   serverTimestamp,
 } from "firebase/firestore";
+
 import { StudentProfile } from "../types/user";
 import { auth, db } from "@/firebase/firebasefile";
-
-
 
 export const registerUser = async (
   email: string,
   password: string,
   profileData: Omit<
     StudentProfile,
-    "uid" | "email" | "role" | "createdAt"
-  >
+    "uid" | "email" | "role" | "createdAt" | "passportUrl"
+  >,
+  passportBase64: string
 ): Promise<void> => {
 
   console.log("Starting registration...");
@@ -39,30 +39,40 @@ export const registerUser = async (
 
   console.log("Auth created:", user.uid);
 
-  const profile: StudentProfile = {
+  try {
+    const profile: StudentProfile = {
+      uid: user.uid,
+      email: email.trim(),
+      role: "student",
+      createdAt: new Date(),
+      passportUrl: passportBase64,
+      ...profileData,
+    };
 
-    uid: user.uid,
-    email: email.trim(),
+    console.log("Saving profile...");
 
-    role: "student",
+    await setDoc(
+      doc(db, "students", user.uid),
+      {
+        ...profile,
+        createdAt: serverTimestamp(),
+      }
+    );
 
-    createdAt: new Date(),
+    console.log("Profile saved successfully");
+  } catch (err: any) {
+    console.error("Failed to complete profile step. Rolling back user creation...", err.message);
+    // Delete user so they can retry smoothly without getting email already in use error
+    await user.delete().catch((e) => console.log("Rollback failed:", e));
 
-    ...profileData,
-
-  };
-
-  console.log("Saving profile...");
-
-  await setDoc(
-    doc(db, "students", user.uid),
-    {
-      ...profile,
-      createdAt: serverTimestamp(),
+    if (err.code === "permission-denied") {
+      throw new Error(
+        "FIRESTORE RULES ERROR: Please go to Firebase Console > Firestore Database > Rules and make sure the new text was Published successfully!"
+      );
     }
-  );
 
-  console.log("Profile saved successfully");
+    throw new Error("Failed to save profile details: " + err.message);
+  }
 
 };
 
@@ -100,22 +110,20 @@ export const getUserProfile = async (
   uid: string
 ): Promise<StudentProfile | null> => {
 
-  const docRef =
-    doc(db, "students", uid);
+  try {
+    const docRef = doc(db, "students", uid);
+    const snapshot = await getDoc(docRef);
 
-  const snapshot =
-    await getDoc(docRef);
+    if (!snapshot.exists()) {
+      console.log("Profile not found in Firestore");
+      return null;
+    }
 
-  if (!snapshot.exists()) {
-
-    console.log("Profile not found");
-
+    console.log("Profile loaded");
+    return snapshot.data() as StudentProfile;
+  } catch (error) {
+    console.error("Error fetching user profile (check firestore rules):", error);
     return null;
-
   }
-
-  console.log("Profile loaded");
-
-  return snapshot.data() as StudentProfile;
 
 };

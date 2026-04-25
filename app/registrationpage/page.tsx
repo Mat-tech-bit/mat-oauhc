@@ -1,23 +1,27 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  Box, Typography, TextField, Grid as Grid, MenuItem, 
-  FormControl, FormLabel, RadioGroup, FormControlLabel, 
-  Radio, Button, Paper, Divider, Container, Alert 
+import {
+  Box, Typography, TextField, Grid, MenuItem,
+  FormControl, FormLabel, RadioGroup, FormControlLabel,
+  Radio, Button, Paper, Divider, Container, Alert, IconButton,
+  Avatar, Stack, Step, StepLabel, Stepper, Fade, CircularProgress,
+  useTheme
 } from '@mui/material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '../library/auth';
-import { StudentProfile } from '../types/user';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function RegistrationForm() {
   const router = useRouter();
+  const theme = useTheme();
 
-  // 1. State Management
   const [formData, setFormData] = useState({
     fullName: '',
     matricNumber: '',
-    department: '',
+    faculty: '',
+    level: '',
     dob: '',
     gender: 'Male',
     phoneNumber: '',
@@ -28,140 +32,142 @@ export default function RegistrationForm() {
     password: ''
   });
 
+  const [passportFile, setPassportFile] = useState<File | null>(null);
+  const [passportPreview, setPassportPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [activeStep, setActiveStep] = useState(0);
 
-  // 2. Handle Input Changes
+  const steps = ['Bio-Data', 'Medical Info', 'Security'];
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 3. The Submit Function (Fixed and Scoped)
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setPassportFile(file);
+      setPassportPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 400; const MAX_HEIGHT = 400;
+          let width = img.width; let height = img.height;
+          if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } }
+          else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext("2d"); ctx?.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL("image/jpeg", 0.75));
+        };
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleNext = () => setActiveStep((prev) => prev + 1);
+  const handleBack = () => setActiveStep((prev) => prev - 1);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (activeStep < 2) return handleNext();
+
     setLoading(true);
     setError('');
-
-    // Separate email/password for Firebase Auth, the rest for Firestore
     const { email, password, ...profileData } = formData;
 
+    if (!passportFile) {
+      setError("Passport photo is required.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      await registerUser(
-  email,
-  password,
-  profileData as Omit<
-    StudentProfile,
-    "uid" | "email" | "role" | "createdAt"
-  >
-);
+      const passportBase64 = await fileToBase64(passportFile);
+      await registerUser(email, password, profileData, passportBase64);
       setLoading(false);
-      alert('Registration successful! Please login.');
-      router.push('/loginpage'); 
-    } catch (err: unknown) {
+      router.push('/loginpage');
+    } catch (err: any) {
       setLoading(false);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unexpected error occurred.");
-      }
+      setError(err.message || "Registration failed.");
     }
   };
 
   return (
-    <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh', py: 4, px: 2 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 8, px: 2 }}>
       <Container maxWidth="md">
-        <Paper 
-          elevation={0} 
-          sx={{ p: { xs: 3, md: 5 }, borderRadius: 2, border: '1px solid #e0e0e0' }}
-        >
-          <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
-            Student Registration
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
-            Create your health center profile to access medical services.
-          </Typography>
+        <Paper elevation={0} sx={{ p: { xs: 3, md: 6 }, borderRadius: 8, border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}>
+          <Stepper activeStep={activeStep} sx={{ mb: 6 }}>
+            {steps.map((label) => (
+              <Step key={label}><StepLabel><Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary' }}>{label}</Typography></StepLabel></Step>
+            ))}
+          </Stepper>
 
-          {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+          {error && <Alert severity="error" sx={{ mb: 4, borderRadius: 3 }}>{error}</Alert>}
 
-          {/* This now points correctly to the function defined above */}
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth label="Full Name" name="fullName" variant="outlined" onChange={handleChange} required />
-              </Grid>
+            {activeStep === 0 && (
+              <Fade in>
+                <Grid container spacing={3}>
+                  <Grid size={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+                    <Avatar src={passportPreview || ""} sx={{ width: 120, height: 120, mb: 2, border: '2px solid', borderColor: 'primary.main' }} />
+                    <Button variant="outlined" component="label" startIcon={<PhotoCamera />} sx={{ borderRadius: 2 }}>
+                      Upload Passport
+                      <input hidden accept="image/*" type="file" onChange={handleFileChange} />
+                    </Button>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Full Name" name="fullName" value={formData.fullName} onChange={handleChange} required /></Grid>
+                  <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Matric Number" name="matricNumber" value={formData.matricNumber} onChange={handleChange} required /></Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField fullWidth select label="Faculty" name="faculty" value={formData.faculty} onChange={handleChange} required>
+                      {['Technology', 'College of Health Sciences', 'Basic Medical Sciences', 'Clinical Sciences', 'Dentistry', 'Science', 'Arts', 'Education', 'Law', 'Environmental Development Management', 'Agriculture', 'Pharmacy', 'Administration', 'Social Sciences'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}
+                    </TextField>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField fullWidth select label="Level" name="level" value={formData.level} onChange={handleChange} required>
+                      {['100L', '200L', '300L', '400L', '500L'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}
+                    </TextField>
+                  </Grid>
+                </Grid>
+              </Fade>
+            )}
 
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth label="Matric Number" name="matricNumber" variant="outlined" onChange={handleChange} required />
-              </Grid>
+            {activeStep === 1 && (
+              <Fade in>
+                <Grid container spacing={3}>
+                  <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth type="date" label="DOB" name="dob" InputLabelProps={{ shrink: true }} value={formData.dob} onChange={handleChange} /></Grid>
+                  <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth select label="Blood Group" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required>{['A+', 'O+', 'B+', 'AB+'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}</TextField></Grid>
+                  <Grid size={12}><TextField fullWidth label="Emergency Contact" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} required /></Grid>
+                  <Grid size={12}><TextField fullWidth label="Medical History" name="medicalHistory" value={formData.medicalHistory} multiline rows={3} onChange={handleChange} /></Grid>
+                </Grid>
+              </Fade>
+            )}
 
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth select label="Department" name="department" value={formData.department} onChange={handleChange} required>
-                  <MenuItem value="Engineering">Engineering</MenuItem>
-                  <MenuItem value="Medicine">Medicine</MenuItem>
-                  <MenuItem value="Science">Science</MenuItem>
-                  <MenuItem value="Arts">Arts</MenuItem>
-                </TextField>
-              </Grid>
+            {activeStep === 2 && (
+              <Fade in>
+                <Grid container spacing={3}>
+                  <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} required /></Grid>
+                  <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Phone" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required /></Grid>
+                  <Grid size={12}><TextField fullWidth label="Password" name="password" type="password" value={formData.password} onChange={handleChange} required /></Grid>
+                </Grid>
+              </Fade>
+            )}
 
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth type="date" label="Date of Birth" name="dob" InputLabelProps={{ shrink: true }} onChange={handleChange} required />
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 6 }}>
-                <FormControl>
-                  <FormLabel>Gender</FormLabel>
-                  <RadioGroup row name="gender" value={formData.gender} onChange={handleChange}>
-                    <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                    <FormControlLabel value="Female" control={<Radio />} label="Female" />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth label="Phone Number" name="phoneNumber" variant="outlined" onChange={handleChange} required />
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth label="Email" name="email" type="email" variant="outlined" onChange={handleChange} required />
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth label="Password" name="password" type="password" variant="outlined" onChange={handleChange} required />
-              </Grid>
-
-              <Grid size={12}><Divider /></Grid>
-
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth select label="Blood Group" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required>
-                  <MenuItem value="A+">A+</MenuItem>
-                  <MenuItem value="O+">O+</MenuItem>
-                  <MenuItem value="B+">B+</MenuItem>
-                  <MenuItem value="AB+">AB+</MenuItem>
-                  <MenuItem value="O-">O-</MenuItem>
-                </TextField>
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth label="Emergency Contact" name="emergencyContact" variant="outlined" onChange={handleChange} required />
-              </Grid>
-
-              <Grid size={12}>
-                <TextField fullWidth label="Medical History / Allergies" name="medicalHistory" multiline rows={3} variant="outlined" onChange={handleChange} />
-              </Grid>
-
-              <Grid size={12}>
-                <Button 
-                  type="submit" 
-                  variant="contained" 
-                  fullWidth 
-                  size="large"
-                  disabled={loading}
-                  sx={{ height: 50, fontWeight: 'bold' }}
-                >
-                  {loading ? 'Registering...' : 'Register Profile'}
-                </Button>
-              </Grid>
-            </Grid>
+            <Stack direction="row" spacing={2} sx={{ mt: 6 }}>
+              {activeStep > 0 && <Button variant="outlined" onClick={handleBack} startIcon={<ArrowBackIcon />} sx={{ flex: 1, height: 56, borderRadius: 3, fontWeight: 700 }}>Back</Button>}
+              <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{ flex: 2, height: 56, borderRadius: 3, fontWeight: 900 }}>
+                {loading ? <CircularProgress size={24} color="inherit" /> : (activeStep === 2 ? 'Register' : 'Continue')}
+              </Button>
+            </Stack>
           </form>
         </Paper>
       </Container>

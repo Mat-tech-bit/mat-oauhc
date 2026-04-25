@@ -1,4 +1,5 @@
 "use client";
+import { usePathname } from 'next/navigation';
 import {
   AppBar,
   Toolbar,
@@ -8,220 +9,196 @@ import {
   useTheme,
   useMediaQuery,
   IconButton,
+  Tooltip,
+  Avatar,
+  Menu,
+  MenuItem,
+  Container,
+  Drawer,
+  Stack,
+  Divider
 } from "@mui/material";
 import Link from "next/link";
 import * as React from "react";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
-import Drawer from "@mui/material/Drawer";
 import CloseIcon from "@mui/icons-material/Close";
+import { ThemeToggleButton } from "../theme";
 
 export default function Navbar() {
-  const pages = [
-    { name: "Home", path: "/" },
-    { name: "Features", path: "/features" },
-    { name: "Contact", path: "/footer" },
-  ];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const pathname = usePathname();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  // 🚨 Move conditional return AFTER all hooks to follow React rules
+  const noNavRoutes = ['/dashboard', '/appointments', '/prescriptions', '/settings', '/student-records'];
+  const shouldHide = noNavRoutes.some(route => pathname?.startsWith(route));
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const pages = [
+    { name: "Home", path: "/" },
+    { name: "Features", path: "/features" },
+    { name: "Contact", path: "/#footer" },
+  ];
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  if (shouldHide) return null;
 
   return (
-    <AppBar position="static">
-      {isMobile ? (
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <MedicalServicesIcon
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              OAUHC
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+    <AppBar 
+      position="sticky" 
+      sx={{ 
+        top: 0, 
+        zIndex: 1100,
+        bgcolor: theme.palette.mode === 'dark' ? 'background.paper' : 'primary.main',
+        backgroundImage: 'none',
+        boxShadow: theme.palette.mode === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.1)'
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          {/* Logo Section */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {isMobile && (
               <IconButton
                 size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
+                aria-label="menu"
                 onClick={handleOpenNavMenu}
                 color="inherit"
+                sx={{ mr: 1 }}
               >
                 <MenuIcon />
               </IconButton>
-              <Drawer
-                PaperProps={{
-                  sx: {
-                    height: "auto", // 👈 THIS fixes full height
-                    maxHeight: 300, // 👈 control how tall it should be
-                    mt: 8, // 👈 pushes it down from top (optional)
-                    borderRadius: 2, // 👈 makes it look like a dropdown
-                  },
-                }}
-                anchor="left"
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-              >
-                <Box sx={{ width: 250, p: 2 }}>
-                  {/* Top: Title + Close Button */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      mb: 2,
-                    }}
-                  >
-                    <IconButton onClick={handleCloseNavMenu}>
-                      <CloseIcon />
-                    </IconButton>
-                  </Box>
-
-                  {/* Menu Items */}
-                 {pages.map((page) => (
-  <Link key={page.name} href={page.path} style={{ textDecoration: "none" }}>
-    <Button
-      fullWidth
-      sx={{ justifyContent: "flex-start", mb: 1 }}
-      onClick={handleCloseNavMenu}
-    >
-      {page.name}
-    </Button>
-  </Link>
-))}
-                </Box>
-              </Drawer>
-            </Box>
-            <MedicalServicesIcon
-              sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-            />
+            )}
+            <MedicalServicesIcon sx={{ mr: 1 }} />
             <Typography
-              variant="h5"
+              variant="h6"
               noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
+              component={Link}
+              href="/"
               sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
+                fontWeight: 800,
                 color: "inherit",
                 textDecoration: "none",
+                letterSpacing: -0.5
               }}
             >
               OAUHC
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-          {pages.map((page) => (
-  <Link key={page.name} href={page.path} style={{ textDecoration: "none" }}>
-    <Button
-      sx={{ my: 2, color: "white", display: "block" }}
-      onClick={handleCloseNavMenu}
-    >
-      {page.name}
-    </Button>
-  </Link>
-))}
-            </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="oau logo" src="/oauLogo.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: "center" }}>
-                      {setting}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      ) : (
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h6">
-            {" "}
-            <MedicalServicesIcon />
-            OAUHC
-          </Typography>
-
-          <Box sx={{ gap: 2 }}>
-            <Button color="inherit">Home</Button>
-            <Button color="inherit">Features</Button>
-            <Button color="inherit">Contact</Button>
           </Box>
 
-          <Box>
-            <Button component={Link} href="/loginpage" sx={{ mr: 1 }} variant="contained">
-              Login
-            </Button>
-            <Button component={Link} href="/registrationpage" variant="contained">Register</Button>
+          {/* Desktop Navigation */}
+          {!isMobile && (
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              {pages.map((page) => (
+                <Button 
+                  key={page.name} 
+                  component={Link} 
+                  href={page.path} 
+                  color="inherit"
+                  sx={{ 
+                    fontWeight: 600, 
+                    px: 2,
+                    textTransform: 'none',
+                    opacity: 0.9,
+                    '&:hover': { opacity: 1, bgcolor: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  {page.name}
+                </Button>
+              ))}
+            </Box>
+          )}
+
+          {/* Right Section: Theme Toggle + Login/Register */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 2 } }}>
+            <ThemeToggleButton />
+            {!isMobile && (
+              <>
+                <Button 
+                  component={Link} 
+                  href="/loginpage" 
+                  color="inherit"
+                  sx={{ fontWeight: 700, textTransform: 'none' }}
+                >
+                  Login
+                </Button>
+                <Button 
+                  component={Link} 
+                  href="/registrationpage" 
+                  variant="contained" 
+                  sx={{ 
+                    bgcolor: 'white', 
+                    color: 'primary.main', 
+                    fontWeight: 800,
+                    textTransform: 'none',
+                    borderRadius: 2,
+                    '&:hover': { bgcolor: '#f0f0f0' }
+                  }}
+                >
+                    Register
+                </Button>
+              </>
+            )}
           </Box>
         </Toolbar>
-      )}
+      </Container>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="left"
+        open={Boolean(anchorElNav)}
+        onClose={handleCloseNavMenu}
+        PaperProps={{
+          sx: { width: 280, bgcolor: 'background.paper', p: 3 }
+        }}
+      >
+        <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h6" sx={{ fontWeight: 800, color: 'primary.main' }}>OAU Health</Typography>
+            <IconButton onClick={handleCloseNavMenu}><CloseIcon /></IconButton>
+        </Box>
+        <Stack spacing={2}>
+          {pages.map((page) => (
+            <Button
+              key={page.name}
+              component={Link}
+              href={page.path}
+              fullWidth
+              sx={{ justifyContent: "flex-start", color: 'text.primary', fontWeight: 600, py: 1.5 }}
+              onClick={handleCloseNavMenu}
+            >
+              {page.name}
+            </Button>
+          ))}
+          <Divider sx={{ my: 2 }} />
+          <Button
+            component={Link}
+            href="/loginpage"
+            variant="outlined"
+            fullWidth
+            onClick={handleCloseNavMenu}
+            sx={{ fontWeight: 700 }}
+          >
+            Login
+          </Button>
+          <Button
+            component={Link}
+            href="/registrationpage"
+            variant="contained"
+            fullWidth
+            onClick={handleCloseNavMenu}
+            sx={{ fontWeight: 700 }}
+          >
+            Register Now
+          </Button>
+        </Stack>
+      </Drawer>
     </AppBar>
   );
 }

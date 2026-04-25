@@ -138,7 +138,7 @@ export default function AdminPage() {
               </TableCell>
 
               <TableCell sx={{ color: "white" }}>
-                Department
+                Faculty
               </TableCell>
 
               <TableCell sx={{ color: "white" }}>
@@ -168,7 +168,7 @@ export default function AdminPage() {
                 </TableCell>
 
                 <TableCell>
-                  {student.department}
+                  {student.faculty}
                 </TableCell>
 
                 <TableCell>

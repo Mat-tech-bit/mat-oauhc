@@ -2,7 +2,8 @@ export interface StudentProfile {
   uid: string;
   fullName: string;
   matricNumber: string;
-  department: string;
+  faculty: string;
+  level?: string;
   dob: string;
   gender: string;
   phoneNumber: string;
@@ -11,5 +12,6 @@ export interface StudentProfile {
   medicalHistory: string;
   email: string;
   role: "student" | "admin";
+  passportUrl?: string;
   createdAt: Date;
 }
