@@ -19,10 +19,9 @@ import {
   Container,
   useTheme,
   useMediaQuery,
-  Tooltip,
-  Fade,
   Stack
 } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -152,7 +151,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       fontWeight: active ? 700 : 500 
                     }} 
                   />
-                  {active && <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.contrastText' }} />}
+                  {active && (
+                    <motion.div
+                      layoutId="sidebar-active-dot"
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        backgroundColor: 'white'
+                      }}
+                    />
+                  )}
                 </ListItemButton>
               </ListItem>
             );
@@ -186,6 +195,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           color: "text.primary",
           borderBottom: "1px solid",
           borderColor: 'divider',
+          zIndex: theme.zIndex.drawer + 1
         }}
       >
         <Toolbar sx={{ justifyContent: "space-between", px: { xs: 2, md: 4 } }}>
@@ -262,9 +272,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           mx: 'auto'
         }}
       >
-        <Fade in timeout={600}>
-          <Box>{children}</Box>
-        </Fade>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </Box>
     </Box>
   );

@@ -14,9 +14,9 @@ import {
   IconButton,
   InputAdornment,
   Avatar,
-  Fade,
   useTheme
 } from '@mui/material';
+import { motion } from 'framer-motion';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -72,11 +72,16 @@ export default function LoginPage() {
         backgroundImage: theme.palette.mode === 'dark' 
           ? 'radial-gradient(at 0% 0%, rgba(25, 118, 210, 0.1) 0, transparent 50%)' 
           : 'radial-gradient(at 0% 0%, rgba(25, 118, 210, 0.05) 0, transparent 50%)',
-        p: 2
+        p: 2,
+        overflow: 'hidden'
       }}
     >
-      <Fade in timeout={1000}>
-        <Container maxWidth="sm">
+      <Container maxWidth="sm">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <Paper 
             elevation={0} 
             sx={{ 
@@ -89,9 +94,15 @@ export default function LoginPage() {
             }}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 5 }}>
-              <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56, mb: 2, boxShadow: '0 8px 16px rgba(25, 118, 210, 0.2)' }}>
-                <MedicalServicesIcon />
-              </Avatar>
+              <motion.div
+                initial={{ transform: 'rotate(-45deg)', opacity: 0 }}
+                animate={{ transform: 'rotate(0deg)', opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56, mb: 2, boxShadow: '0 8px 16px rgba(25, 118, 210, 0.2)' }}>
+                  <MedicalServicesIcon />
+                </Avatar>
+              </motion.div>
               <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: -1, color: 'text.primary' }}>
                 Welcome Back
               </Typography>
@@ -141,8 +152,8 @@ export default function LoginPage() {
                     borderRadius: 3, 
                     fontWeight: 800, 
                     fontSize: '1rem',
-                    textTransform: 'none',
-                    mt: 1
+                    transition: '0.3s',
+                    '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 8px 16px rgba(25, 118, 210, 0.3)' }
                   }}
                 >
                   {loading ? <CircularProgress size={24} color="inherit" /> : "Access Dashboard"}
@@ -153,18 +164,18 @@ export default function LoginPage() {
             <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
               <Button 
                 onClick={handleForgotPassword} 
-                sx={{ textTransform: 'none', fontWeight: 600, color: 'text.secondary' }}
+                sx={{ textTransform: 'none', fontWeight: 600, color: 'text.secondary', '&:hover': { textDecoration: 'underline', bgcolor: 'transparent' } }}
               >
                 Having trouble signing in?
               </Button>
               <Typography variant="body2" color="text.secondary">
                 Don't have an account?{' '}
                 <Button 
-                    component={Link} 
-                    href="/registrationpage" 
-                    sx={{ fontWeight: 800, color: 'primary.main', textTransform: 'none', minWidth: 0, p: 0.5 }}
+                  component={Link} 
+                  href="/registrationpage" 
+                  sx={{ fontWeight: 800, color: 'primary.main', textTransform: 'none', minWidth: 0, p: 0.5, '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' } }}
                 >
-                    Register here
+                  Register here
                 </Button>
               </Typography>
             </Box>
@@ -173,8 +184,8 @@ export default function LoginPage() {
           <Typography align="center" variant="caption" sx={{ display: 'block', mt: 4, color: 'text.disabled', fontWeight: 500 }}>
              &copy; {new Date().getFullYear()} Obafemi Awolowo University Health Center
           </Typography>
-        </Container>
-      </Fade>
+        </motion.div>
+      </Container>
     </Box>
   );
 }
