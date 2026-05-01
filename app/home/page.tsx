@@ -42,7 +42,7 @@ const HomePage = () => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ bgcolor: 'background.default', overflowX: 'hidden' }}>
+    <Box sx={{ bgcolor: 'background.default', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
       {/* 1. HERO SECTION */}
       <Box 
         sx={{ 

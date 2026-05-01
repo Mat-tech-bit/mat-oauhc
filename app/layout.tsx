@@ -28,15 +28,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className={roboto.variable}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body style={{ margin: 0, padding: 0, overflowX: "hidden", width: "100%", WebkitTextSizeAdjust: "100%" }} className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
       </body>
     </html>
