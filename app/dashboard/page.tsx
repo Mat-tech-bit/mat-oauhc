@@ -98,8 +98,8 @@ export default function Dashboard() {
         {/* Profile Identity Card */}
         <Grid size={{ xs: 12, md: 7 }}>
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <Paper 
@@ -170,8 +170,8 @@ export default function Dashboard() {
         {/* Medical Summary Sidebar */}
         <Grid size={{ xs: 12, md: 5 }}>
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             style={{ height: '100%' }}
           >

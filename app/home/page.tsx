@@ -318,13 +318,13 @@ const HomePage = () => {
       </Box>
 
       {/* 4. WHY CHOOSE US SECTION */}
-      <Box sx={{ py: { xs: 8, md: 16 }, px: { xs: 2, md: 0 }, bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#0c1221', color: 'white', position: 'relative' }}>
+      <Box sx={{ py: { xs: 8, md: 16 }, px: { xs: 2, md: 0 }, bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#0c1221', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <Container>
           <Grid container spacing={10} alignItems="center">
             <Grid size={{ xs: 12, md: 6 }}>
               <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
@@ -349,8 +349,8 @@ const HomePage = () => {
                   ].map((item, i) => (
                     <motion.div 
                       key={i} 
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: i * 0.2 }}
                       style={{ display: 'flex', gap: '24px' }}
@@ -367,8 +367,8 @@ const HomePage = () => {
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
