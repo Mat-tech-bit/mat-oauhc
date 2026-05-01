@@ -18,7 +18,7 @@ const ThemeModeContext = createContext({
 // 2️⃣ Provider that wraps your app
 export function ThemeToggleProvider({ children }: { children: React.ReactNode }) {
   // Initialize with true to ensure dark mode by default
-  const [darkMode, setDarkMode] = useState(true)
+  const [darkMode, setDarkMode] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   // Load preference on mount
@@ -27,8 +27,8 @@ export function ThemeToggleProvider({ children }: { children: React.ReactNode })
     if (savedTheme) {
       setDarkMode(savedTheme === "dark")
     } else {
-      // Default to dark if no saved preference
-      setDarkMode(true)
+      // Default to light if no saved preference
+      setDarkMode(false)
     }
     setMounted(true)
   }, [])
@@ -44,7 +44,7 @@ export function ThemeToggleProvider({ children }: { children: React.ReactNode })
     palette: {
       mode: darkMode ? "dark" : "light",
       primary: {
-        main: "#1976d2",
+        main: "#0284c7",
       },
       background: {
         default: darkMode ? "#0f172a" : "#f8fafc",
@@ -57,7 +57,7 @@ export function ThemeToggleProvider({ children }: { children: React.ReactNode })
       divider: darkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.12)",
     },
     shape: {
-      borderRadius: 12,
+      borderRadius: 8,
     },
     typography: {
       fontFamily: "var(--font-roboto), Roboto, sans-serif",

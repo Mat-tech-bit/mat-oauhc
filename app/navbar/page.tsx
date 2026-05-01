@@ -62,7 +62,7 @@ export default function Navbar() {
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar variant="dense" sx={{ justifyContent: "space-between", minHeight: { xs: 56, md: 64 }, px: { xs: 0, sm: 2 } }}>
           {/* Logo Section */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {isMobile && (
@@ -86,7 +86,8 @@ export default function Navbar() {
                 fontWeight: 800,
                 color: "inherit",
                 textDecoration: "none",
-                letterSpacing: -0.5
+                letterSpacing: -0.5,
+                fontSize: { xs: '1.05rem', sm: '1.25rem' }
               }}
             >
               OAUHC

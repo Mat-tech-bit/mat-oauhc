@@ -85,15 +85,16 @@ export default function LoginPage() {
           <Paper 
             elevation={0} 
             sx={{ 
-                p: { xs: 4, md: 6 }, 
+                p: { xs: 3, md: 6 }, 
                 borderRadius: 8, 
                 border: '1px solid',
                 borderColor: 'divider',
                 bgcolor: 'background.paper',
-                boxShadow: theme.palette.mode === 'dark' ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : '0 25px 50px -12px rgba(0, 0, 0, 0.05)'
+                boxShadow: theme.palette.mode === 'dark' ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : '0 25px 50px -12px rgba(0, 0, 0, 0.05)',
+                mx: { xs: 1, md: 0 }
             }}
           >
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 5 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
               <motion.div
                 initial={{ transform: 'rotate(-45deg)', opacity: 0 }}
                 animate={{ transform: 'rotate(0deg)', opacity: 1 }}

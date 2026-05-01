@@ -119,7 +119,7 @@ const HomePage = () => {
                   sx={{ 
                     fontWeight: 900, 
                     mb: 3, 
-                    fontSize: { xs: '2.8rem', sm: '3.5rem', md: '5rem' },
+                    fontSize: { xs: '2.2rem', sm: '3rem', md: '5rem' },
                     lineHeight: { xs: 1.2, md: 1.1 },
                     textShadow: '0 8px 16px rgba(0,0,0,0.4)',
                     color: 'white'
@@ -137,8 +137,9 @@ const HomePage = () => {
                     mb: 5, 
                     fontWeight: 300, 
                     opacity: 0.85, 
-                    lineHeight: 1.8,
-                    fontSize: { xs: '1.05rem', md: '1.25rem' },
+                    lineHeight: 1.6,
+                    fontSize: { xs: '0.95rem', md: '1.25rem' },
+
                     maxWidth: { xs: '100%', md: '90%' },
                     color: 'white'
                   }}
@@ -228,7 +229,7 @@ const HomePage = () => {
       </Box>
 
       {/* 3. CORE SERVICES SECTION */}
-      <Box sx={{ py: { xs: 12, md: 18 } }}>
+      <Box sx={{ py: { xs: 8, md: 14 }, px: { xs: 2, md: 0 } }}>
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -317,7 +318,7 @@ const HomePage = () => {
       </Box>
 
       {/* 4. WHY CHOOSE US SECTION */}
-      <Box sx={{ py: { xs: 12, md: 20 }, bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#0c1221', color: 'white', position: 'relative' }}>
+      <Box sx={{ py: { xs: 8, md: 16 }, px: { xs: 2, md: 0 }, bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#0c1221', color: 'white', position: 'relative' }}>
         <Container>
           <Grid container spacing={10} alignItems="center">
             <Grid size={{ xs: 12, md: 6 }}>
@@ -405,7 +406,7 @@ const HomePage = () => {
       </Box>
 
       {/* 5. CAMPUS NEWS / TIPS */}
-      <Box sx={{ py: { xs: 12, md: 18 } }}>
+      <Box sx={{ py: { xs: 8, md: 14 }, px: { xs: 2, md: 0 } }}>
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -469,7 +470,7 @@ const HomePage = () => {
       </Box>
 
       {/* FINAL CTA BOX */}
-      <Container sx={{ py: 10 }}>
+      <Container sx={{ py: { xs: 6, md: 10 } }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -479,7 +480,7 @@ const HomePage = () => {
           <Paper 
               elevation={0}
               sx={{ 
-                  p: { xs: 6, md: 10 }, 
+                  p: { xs: 4, md: 10 }, 
                   bgcolor: 'primary.main', 
                   borderRadius: 8, 
                   textAlign: 'center', 

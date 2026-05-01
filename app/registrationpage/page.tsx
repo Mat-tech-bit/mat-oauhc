@@ -116,8 +116,8 @@ export default function RegistrationForm() {
            animate={{ opacity: 1, scale: 1 }}
            transition={{ duration: 0.5 }}
         >
-          <Paper elevation={0} sx={{ p: { xs: 3, md: 6 }, borderRadius: 8, border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}>
-            <Stepper activeStep={activeStep} sx={{ mb: 6 }}>
+          <Paper elevation={0} sx={{ p: { xs: 2.5, md: 6 }, borderRadius: 8, border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', mx: { xs: 1, md: 0 } }}>
+            <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>
