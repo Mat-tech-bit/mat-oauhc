@@ -10,20 +10,17 @@ const roboto = Roboto({
   variable: "--font-roboto",
 });
 
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  userScalable: false,
 };
 
 export const metadata: Metadata = {
   title: "OAU Health Center | Digital Portal",
-  description: "Official healthcare management portal for Obafemi Awolowo University Students.",
+  description:
+    "Official healthcare management portal for Obafemi Awolowo University Students.",
 };
 
 export default function RootLayout({
@@ -33,10 +30,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={roboto.variable}>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
-      </head>
-      <body style={{ margin: 0, padding: 0, overflowX: "hidden", width: "100%", WebkitTextSizeAdjust: "100%" }} className="min-h-full flex flex-col">
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          overflowX: "hidden",
+          width: "100%",
+          maxWidth: "100vw",
+          WebkitTextSizeAdjust: "100%",
+        }}
+        className="min-h-full flex flex-col"
+      >
         <Providers>{children}</Providers>
       </body>
     </html>
