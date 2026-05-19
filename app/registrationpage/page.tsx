@@ -4,18 +4,18 @@ import React, { useState } from 'react';
 import {
   Box, Typography, TextField, Grid, MenuItem,
   Button, Paper, Container, Alert,
-  Avatar, Stack, Step, StepLabel, Stepper, CircularProgress,
-  useTheme
+  Avatar, Stack, Step, StepLabel, Stepper, CircularProgress, IconButton, InputAdornment
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '../library/auth';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function RegistrationForm() {
   const router = useRouter();
-  const theme = useTheme();
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -29,11 +29,14 @@ export default function RegistrationForm() {
     emergencyContact: '',
     medicalHistory: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
 
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [passportPreview, setPassportPreview] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [activeStep, setActiveStep] = useState(0);
@@ -42,6 +45,16 @@ export default function RegistrationForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
+  const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +96,14 @@ export default function RegistrationForm() {
 
     setLoading(true);
     setError('');
-    const { email, password, ...profileData } = formData;
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      setLoading(false);
+      return;
+    }
+
+    const { email, password, confirmPassword: _confirmPassword, ...profileData } = formData;
 
     if (!passportFile) {
       setError("Passport photo is required.");
@@ -96,9 +116,9 @@ export default function RegistrationForm() {
       await registerUser(email, password, profileData, passportBase64);
       setLoading(false);
       router.push('/loginpage');
-    } catch (err: any) {
+    } catch (err) {
       setLoading(false);
-      setError(err.message || "Registration failed.");
+      setError(err instanceof Error ? err.message : "Registration failed.");
     }
   };
 
@@ -178,7 +198,56 @@ export default function RegistrationForm() {
                     <Grid container spacing={3}>
                       <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} required /></Grid>
                       <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Phone" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required /></Grid>
-                      <Grid size={12}><TextField fullWidth label="Password" name="password" type="password" value={formData.password} onChange={handleChange} required /></Grid>
+                      <Grid size={{ xs: 12, md: 6 }}>
+                        <TextField
+                          fullWidth
+                          label="Password"
+                          name="password"
+                          type={showPassword ? 'text' : 'password'}
+                          value={formData.password}
+                          onChange={handleChange}
+                          required
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={handleClickShowPassword}
+                                  onMouseDown={handleMouseDownPassword}
+                                  edge="end"
+                                >
+                                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
+                      <Grid size={{ xs: 12, md: 6 }}>
+                        <TextField
+                          fullWidth
+                          label="Confirm Password"
+                          name="confirmPassword"
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          required
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle confirm password visibility"
+                                  onClick={handleClickShowConfirmPassword}
+                                  onMouseDown={handleMouseDownConfirmPassword}
+                                  edge="end"
+                                >
+                                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
                     </Grid>
                   )}
                 </motion.div>
