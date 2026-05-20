@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
+
 import {
   Box, Typography, TextField, Grid, MenuItem,
   Button, Paper, Container, Alert,
-  Avatar, Stack, Step, StepLabel, Stepper, CircularProgress, IconButton, InputAdornment
+  Avatar, Stack, Step, StepLabel, Stepper, CircularProgress, IconButton, InputAdornment,
+  useTheme
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -16,6 +18,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function RegistrationForm() {
   const router = useRouter();
+  const theme = useTheme();
 
   const [formData, setFormData] = useState({
     fullName: '',
