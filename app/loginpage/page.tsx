@@ -65,7 +65,7 @@ export default function LoginPage() {
   return (
     <Box 
       sx={{ 
-        minHeight: '100vh', 
+        minHeight: '600px', 
         display: 'flex', 
         bgcolor: 'background.default',
         overflowY: 'auto'

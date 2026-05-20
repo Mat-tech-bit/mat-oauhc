@@ -48,13 +48,14 @@ const HomePage = () => {
       <Box 
         sx={{ 
           position: 'relative',
-          minHeight: { xs: '90vh', md: '95vh' },
+          minHeight: 'auto',
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
           bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#0c1221',
           color: 'white',
-          pt: { xs: 8, md: 0 }
+          pt: { xs: 12, md: 10 },
+          pb: { xs: 16, md: 20 }
         }}
       >
         {/* Background Image with Overlay */}
@@ -239,7 +240,8 @@ const HomePage = () => {
         sx={{ 
           position: 'relative', 
           zIndex: 10, 
-          mt: -5, 
+          mt: -8, 
+          mb: 12,
           px: { xs: 2, md: 0 } 
         }}
       >
@@ -329,7 +331,7 @@ const HomePage = () => {
       </Box>
 
       {/* 3. CORE SERVICES SECTION */}
-      <Box sx={{ py: { xs: 8, md: 14 }, px: { xs: 2, md: 0 } }}>
+      <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 0 } }}>
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -337,7 +339,7 @@ const HomePage = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <Box sx={{ textAlign: 'center', mb: { xs: 8, md: 12 } }}>
+            <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 5 } }}>
               <Typography variant="h3" sx={{ fontWeight: 900, mb: 3, color: 'text.primary', fontSize: { xs: '2.2rem', md: '3.5rem' } }}>World-Class Care</Typography>
               <Typography color="text.secondary" sx={{ maxWidth: 700, mx: 'auto', fontSize: '1.1rem', lineHeight: 1.8 }}>
                 We have redesigned our medical workflow from the ground up to ensure every student 
@@ -418,7 +420,7 @@ const HomePage = () => {
       </Box>
 
       {/* 3.5 DEPARTMENTS SECTION */}
-      <Box sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.default', position: 'relative' }}>
+      <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: 'background.default', position: 'relative' }}>
         <Container>
           <Grid container spacing={6} alignItems="center">
             <Grid size={{ xs: 12, md: 5 }}>
@@ -493,7 +495,7 @@ const HomePage = () => {
       </Box>
 
       {/* 4. WHY CHOOSE US SECTION */}
-      <Box sx={{ py: { xs: 8, md: 16 }, px: { xs: 2, md: 0 }, bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#0c1221', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ py: { xs: 8, md: 12 }, px: { xs: 2, md: 0 }, bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#0c1221', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <Container>
           <Grid container spacing={10} alignItems="center">
             <Grid size={{ xs: 12, md: 6 }}>
@@ -581,7 +583,7 @@ const HomePage = () => {
       </Box>
 
       {/* 5. CAMPUS NEWS / TIPS */}
-      <Box sx={{ py: { xs: 8, md: 14 }, px: { xs: 2, md: 0 } }}>
+      <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, md: 0 } }}>
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -645,7 +647,7 @@ const HomePage = () => {
       </Box>
 
       {/* FINAL CTA BOX */}
-      <Container sx={{ py: { xs: 6, md: 10 } }}>
+      <Container sx={{ py: { xs: 4, md: 6 } }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -690,9 +692,9 @@ const HomePage = () => {
 
 
       {/* 7. LATEST HEALTH NEWS SECTION */}
-      <Box sx={{ py: 14, bgcolor: 'background.default' }}>
+      <Box sx={{ py: 8, bgcolor: 'background.default' }}>
         <Container>
-          <Box sx={{ mb: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <Box>
               <Typography variant="overline" color="primary" sx={{ fontWeight: 900, letterSpacing: 2 }}>Campus Wellness</Typography>
               <Typography variant="h3" sx={{ fontWeight: 900, mt: 1 }}>Latest Health Updates</Typography>
