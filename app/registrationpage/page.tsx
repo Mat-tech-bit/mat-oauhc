@@ -245,14 +245,14 @@ export default function RegistrationForm() {
           sx={{ 
             display: 'flex', 
             flexDirection: 'column',
-            p: { xs: 2, sm: 4, md: 6 },
+            p: { xs: 4, sm: 6, md: 10 },
             bgcolor: 'background.default',
             overflowY: 'auto',
-            backgroundImage: 'radial-gradient(#1976d208 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(#1976d210 1px, transparent 1px)',
             backgroundSize: '40px 40px'
           }}
         >
-          <Container maxWidth="md" sx={{ my: { xs: 4, md: 'auto' } }}>
+          <Container maxWidth="md" sx={{ py: { xs: 8, md: 10 }, my: 'auto' }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

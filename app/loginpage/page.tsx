@@ -68,7 +68,7 @@ export default function LoginPage() {
         minHeight: '100vh', 
         display: 'flex', 
         bgcolor: 'background.default',
-        overflow: 'hidden'
+        overflowY: 'auto'
       }}
     >
       <Grid container sx={{ flexGrow: 1 }}>
@@ -153,7 +153,7 @@ export default function LoginPage() {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            p: { xs: 2, sm: 4, md: 8 },
+            p: { xs: 4, sm: 6, md: 8 },
             bgcolor: 'background.default'
           }}
         >
