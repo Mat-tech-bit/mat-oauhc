@@ -129,144 +129,255 @@ export default function RegistrationForm() {
   };
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 8, px: 2, overflowX: 'hidden' }}>
-      <Container maxWidth="md">
-        <motion.div
-           initial={{ opacity: 0, scale: 0.95 }}
-           animate={{ opacity: 1, scale: 1 }}
-           transition={{ duration: 0.5 }}
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', display: 'flex', overflow: 'hidden' }}>
+      <Grid container sx={{ flexGrow: 1 }}>
+        {/* Left Side: Guidance & Info (Hidden on mobile) */}
+        <Grid 
+          size={{ xs: 0, md: 5, lg: 4 }} 
+          sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            flexDirection: 'column',
+            justifyContent: 'center',
+            p: 6,
+            bgcolor: '#0f172a',
+            color: 'white',
+            position: 'relative'
+          }}
         >
-          <Paper elevation={0} sx={{ p: { xs: 2.5, md: 6 }, borderRadius: 8, border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', mx: { xs: 1, md: 0 } }}>
-            <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>
-                    <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary' }}>{label}</Typography>
-                  </StepLabel>
-                </Step>
+          <Box sx={{ position: 'relative', zIndex: 2 }}>
+            <Typography variant="h3" sx={{ fontWeight: 900, mb: 3, letterSpacing: -1 }}>
+              Start Your <span style={{ color: '#2196f3' }}>Digital</span> Health Journey.
+            </Typography>
+            <Typography variant="body1" sx={{ opacity: 0.8, mb: 6, lineHeight: 1.7 }}>
+              Registering for the digital portal is the first step towards faster medical response and organized health records.
+            </Typography>
+            
+            <Stack spacing={4}>
+              {[
+                { step: '1', title: 'Bio-Data', desc: 'Provide your basic student identification details.' },
+                { step: '2', title: 'Medical Info', desc: 'Help us understand your medical background for better care.' },
+                { step: '3', title: 'Security', desc: 'Set up your secure credentials for portal access.' }
+              ].map((item, i) => (
+                <Box key={i} sx={{ display: 'flex', gap: 3 }}>
+                  <Box 
+                    sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: '50%', 
+                      bgcolor: activeStep >= i ? 'primary.main' : 'rgba(255,255,255,0.1)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      fontWeight: 900,
+                      flexShrink: 0,
+                      transition: '0.3s'
+                    }}
+                  >
+                    {item.step}
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>{item.title}</Typography>
+                    <Typography variant="caption" sx={{ opacity: 0.6 }}>{item.desc}</Typography>
+                  </Box>
+                </Box>
               ))}
-            </Stepper>
+            </Stack>
+          </Box>
+          
+          {/* Decorative Overlay */}
+          <Box 
+            sx={{ 
+              position: 'absolute',
+              bottom: -50,
+              right: -50,
+              width: 300,
+              height: 300,
+              bgcolor: 'primary.main',
+              filter: 'blur(100px)',
+              opacity: 0.1,
+              zIndex: 1
+            }}
+          />
+        </Grid>
 
-            {error && <Alert severity="error" sx={{ mb: 4, borderRadius: 3 }}>{error}</Alert>}
+        {/* Right Side: Registration Form */}
+        <Grid 
+          size={{ xs: 12, md: 7, lg: 8 }}
+          sx={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            p: { xs: 2, sm: 4, md: 8 },
+            bgcolor: 'background.default',
+            overflowY: 'auto'
+          }}
+        >
+          <Container maxWidth="md" sx={{ my: 'auto' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Paper 
+                elevation={0} 
+                sx={{ 
+                  p: { xs: 3, md: 6 }, 
+                  borderRadius: 6, 
+                  border: '1px solid', 
+                  borderColor: 'divider', 
+                  bgcolor: 'background.paper',
+                  boxShadow: theme.palette.mode === 'dark' ? '0 25px 50px -12px rgba(0,0,0,0.5)' : '0 10px 30px rgba(0,0,0,0.05)'
+                }}
+              >
+                <Box sx={{ mb: 6 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: -1 }}>Create Account</Typography>
+                  <Typography variant="body2" color="text.secondary">Step {activeStep + 1} of 3</Typography>
+                  <Stepper activeStep={activeStep} sx={{ mt: 4, '& .MuiStepIcon-root.Mui-active': { color: 'primary.main' } }}>
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel />
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Box>
 
-            <form onSubmit={handleSubmit}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeStep}
-                  variants={stepVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  transition={{ duration: 0.4 }}
-                >
-                  {activeStep === 0 && (
-                    <Grid container spacing={3}>
-                      <Grid size={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <Avatar src={passportPreview || ""} sx={{ width: 120, height: 120, mb: 2, border: '2px solid', borderColor: 'primary.main' }} />
-                        </motion.div>
-                        <Button variant="outlined" component="label" startIcon={<PhotoCamera />} sx={{ borderRadius: 2 }}>
-                          Upload Passport
-                          <input hidden accept="image/*" type="file" onChange={handleFileChange} />
-                        </Button>
-                      </Grid>
-                      <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Full Name" name="fullName" value={formData.fullName} onChange={handleChange} required /></Grid>
-                      <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Matric Number" name="matricNumber" value={formData.matricNumber} onChange={handleChange} required /></Grid>
-                      <Grid size={{ xs: 12, md: 6 }}>
-                        <TextField fullWidth select label="Faculty" name="faculty" value={formData.faculty} onChange={handleChange} required>
-                          {['Technology', 'College of Health Sciences', 'Basic Medical Sciences', 'Clinical Sciences', 'Dentistry', 'Science', 'Arts', 'Education', 'Law', 'Environmental Development Management', 'Agriculture', 'Pharmacy', 'Administration', 'Social Sciences'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}
-                        </TextField>
-                      </Grid>
-                      <Grid size={{ xs: 12, md: 6 }}>
-                        <TextField fullWidth select label="Level" name="level" value={formData.level} onChange={handleChange} required>
-                          {['100L', '200L', '300L', '400L', '500L'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                  )}
+                {error && <Alert severity="error" sx={{ mb: 4, borderRadius: 3 }}>{error}</Alert>}
 
-                  {activeStep === 1 && (
-                    <Grid container spacing={3}>
-                      <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth type="date" label="DOB" name="dob" InputLabelProps={{ shrink: true }} value={formData.dob} onChange={handleChange} /></Grid>
-                      <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth select label="Blood Group" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required>{['A+', 'O+', 'B+', 'AB+'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}</TextField></Grid>
-                      <Grid size={12}><TextField fullWidth label="Emergency Contact" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} required /></Grid>
-                      <Grid size={12}><TextField fullWidth label="Medical History" name="medicalHistory" value={formData.medicalHistory} multiline rows={3} onChange={handleChange} /></Grid>
-                    </Grid>
-                  )}
-
-                  {activeStep === 2 && (
-                    <Grid container spacing={3}>
-                      <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} required /></Grid>
-                      <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Phone" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required /></Grid>
-                      <Grid size={{ xs: 12, md: 6 }}>
-                        <TextField
-                          fullWidth
-                          label="Password"
-                          name="password"
-                          type={showPassword ? 'text' : 'password'}
-                          value={formData.password}
-                          onChange={handleChange}
-                          required
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handleClickShowPassword}
-                                  onMouseDown={handleMouseDownPassword}
-                                  edge="end"
+                <form onSubmit={handleSubmit}>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeStep}
+                      variants={stepVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{ duration: 0.4 }}
+                    >
+                      {activeStep === 0 && (
+                        <Grid container spacing={3}>
+                          <Grid size={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+                            <Box sx={{ position: 'relative' }}>
+                                <Avatar 
+                                    src={passportPreview || ""} 
+                                    sx={{ 
+                                        width: 140, 
+                                        height: 140, 
+                                        border: '4px solid', 
+                                        borderColor: 'background.paper',
+                                        boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
+                                    }} 
+                                />
+                                <IconButton 
+                                    component="label"
+                                    sx={{ 
+                                        position: 'absolute', 
+                                        bottom: 5, 
+                                        right: 5, 
+                                        bgcolor: 'primary.main', 
+                                        color: 'white',
+                                        '&:hover': { bgcolor: 'primary.dark' }
+                                    }}
                                 >
-                                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    <PhotoCamera sx={{ fontSize: 20 }} />
+                                    <input hidden accept="image/*" type="file" onChange={handleFileChange} />
                                 </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Grid>
-                      <Grid size={{ xs: 12, md: 6 }}>
-                        <TextField
-                          fullWidth
-                          label="Confirm Password"
-                          name="confirmPassword"
-                          type={showConfirmPassword ? 'text' : 'password'}
-                          value={formData.confirmPassword}
-                          onChange={handleChange}
-                          required
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle confirm password visibility"
-                                  onClick={handleClickShowConfirmPassword}
-                                  onMouseDown={handleMouseDownConfirmPassword}
-                                  edge="end"
-                                >
-                                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                  )}
-                </motion.div>
-              </AnimatePresence>
+                            </Box>
+                            <Typography variant="caption" sx={{ mt: 2, fontWeight: 700, opacity: 0.7 }}>Upload Passport Photo</Typography>
+                          </Grid>
+                          <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Full Name" name="fullName" value={formData.fullName} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} /></Grid>
+                          <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Matric Number" name="matricNumber" value={formData.matricNumber} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} /></Grid>
+                          <Grid size={{ xs: 12, md: 6 }}>
+                            <TextField fullWidth select label="Faculty" name="faculty" value={formData.faculty} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}>
+                              {['Technology', 'College of Health Sciences', 'Basic Medical Sciences', 'Clinical Sciences', 'Dentistry', 'Science', 'Arts', 'Education', 'Law', 'Environmental Development Management', 'Agriculture', 'Pharmacy', 'Administration', 'Social Sciences'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}
+                            </TextField>
+                          </Grid>
+                          <Grid size={{ xs: 12, md: 6 }}>
+                            <TextField fullWidth select label="Level" name="level" value={formData.level} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}>
+                              {['100L', '200L', '300L', '400L', '500L'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}
+                            </TextField>
+                          </Grid>
+                        </Grid>
+                      )}
 
-              <Stack direction="row" spacing={2} sx={{ mt: 6 }}>
-                {activeStep > 0 && (
-                  <Button variant="outlined" onClick={handleBack} startIcon={<ArrowBackIcon />} sx={{ flex: 1, height: 56, borderRadius: 3, fontWeight: 700, transition: '0.3s', '&:hover': { transform: 'translateX(-5px)' } }}>
-                    Back
-                  </Button>
-                )}
-                <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{ flex: 2, height: 56, borderRadius: 3, fontWeight: 900, transition: '0.3s', '&:hover': { transform: 'scale(1.02)', boxShadow: '0 8px 16px rgba(25, 118, 210, 0.3)' } }}>
-                  {loading ? <CircularProgress size={24} color="inherit" /> : (activeStep === 2 ? 'Register' : 'Continue')}
-                </Button>
-              </Stack>
-            </form>
-          </Paper>
-        </motion.div>
-      </Container>
+                      {activeStep === 1 && (
+                        <Grid container spacing={3}>
+                          <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth type="date" label="DOB" name="dob" InputLabelProps={{ shrink: true }} value={formData.dob} onChange={handleChange} sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} /></Grid>
+                          <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth select label="Blood Group" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}>{['A+', 'O+', 'B+', 'AB+'].map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}</TextField></Grid>
+                          <Grid size={12}><TextField fullWidth label="Emergency Contact (Name & Phone)" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} /></Grid>
+                          <Grid size={12}><TextField fullWidth label="Medical History / Allergies" name="medicalHistory" value={formData.medicalHistory} multiline rows={4} onChange={handleChange} sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} /></Grid>
+                        </Grid>
+                      )}
+
+                      {activeStep === 2 && (
+                        <Grid container spacing={3}>
+                          <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Email Address" name="email" type="email" value={formData.email} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} /></Grid>
+                          <Grid size={{ xs: 12, md: 6 }}><TextField fullWidth label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} /></Grid>
+                          <Grid size={{ xs: 12, md: 6 }}>
+                            <TextField
+                              fullWidth
+                              label="Password"
+                              name="password"
+                              type={showPassword ? 'text' : 'password'}
+                              value={formData.password}
+                              onChange={handleChange}
+                              required
+                              sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </Grid>
+                          <Grid size={{ xs: 12, md: 6 }}>
+                            <TextField
+                              fullWidth
+                              label="Confirm Password"
+                              name="confirmPassword"
+                              type={showConfirmPassword ? 'text' : 'password'}
+                              value={formData.confirmPassword}
+                              onChange={handleChange}
+                              required
+                              sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton onClick={handleClickShowConfirmPassword} onMouseDown={handleMouseDownConfirmPassword} edge="end">
+                                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </Grid>
+                        </Grid>
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <Stack direction="row" spacing={2} sx={{ mt: 8 }}>
+                    {activeStep > 0 && (
+                      <Button variant="outlined" onClick={handleBack} startIcon={<ArrowBackIcon />} sx={{ flex: 1, height: 56, borderRadius: 3, fontWeight: 700 }}>
+                        Back
+                      </Button>
+                    )}
+                    <Button type="submit" variant="contained" fullWidth disabled={loading} sx={{ flex: 2, height: 56, borderRadius: 3, fontWeight: 900, boxShadow: '0 8px 24px rgba(25, 118, 210, 0.3)' }}>
+                      {loading ? <CircularProgress size={24} color="inherit" /> : (activeStep === 2 ? 'Complete Registration' : 'Continue')}
+                    </Button>
+                  </Stack>
+                </form>
+              </Paper>
+              <Typography align="center" variant="body2" sx={{ mt: 4, color: 'text.secondary' }}>
+                Already have an account?{' '}
+                <Button component={Link} href="/loginpage" sx={{ fontWeight: 800, textTransform: 'none' }}>Login instead</Button>
+              </Typography>
+            </motion.div>
+          </Container>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

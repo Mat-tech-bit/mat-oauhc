@@ -151,6 +151,47 @@ const FeaturesPage = () => {
           ))}
         </Grid>
 
+        {/* How it Works Section */}
+        <Box sx={{ mt: 16, mb: 12 }}>
+          <Typography variant="h4" sx={{ fontWeight: 900, textAlign: 'center', mb: 8 }}>How It Works</Typography>
+          <Grid container spacing={4}>
+            {[
+              { step: '01', title: 'Registration', desc: 'Securely register with your student credentials and medical history.' },
+              { step: '02', title: 'Verification', desc: 'Medical staff verifies your profile and card details.' },
+              { step: '03', title: 'Booking', desc: 'Select a department and book an available time slot.' },
+              { step: '04', title: 'Consultation', desc: 'Meet with a doctor and receive digital prescriptions.' }
+            ].map((item, i) => (
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
+                <Box sx={{ textAlign: 'center', p: 4, bgcolor: 'background.paper', borderRadius: 4, border: '1px solid', borderColor: 'divider', height: '100%' }}>
+                  <Typography variant="h2" sx={{ fontWeight: 900, color: 'primary.main', opacity: 0.1, mb: -4 }}>{item.step}</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 800, mb: 2 }}>{item.title}</Typography>
+                  <Typography variant="body2" color="text.secondary">{item.desc}</Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* FAQ Section */}
+        <Box sx={{ mt: 16 }}>
+          <Typography variant="h4" sx={{ fontWeight: 900, textAlign: 'center', mb: 8 }}>Frequently Asked Questions</Typography>
+          <Grid container spacing={3}>
+            {[
+              { q: 'Is my medical data secure?', a: 'Yes, we use industry-standard encryption to protect all student medical records.' },
+              { q: 'How do I book an appointment?', a: 'Simply log in to your portal, go to the appointments section, and select a slot.' },
+              { q: 'What if I lose my digital prescription?', a: 'Your prescriptions are always available in your digital history for you to view or print.' },
+              { q: 'Is there a limit to appointments?', a: 'Students can book as many appointments as necessary, subject to medical availability.' }
+            ].map((item, i) => (
+              <Grid size={{ xs: 12, md: 6 }} key={i}>
+                <Box sx={{ p: 4, borderRadius: 4, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'primary.main', mb: 1 }}>{item.q}</Typography>
+                  <Typography variant="body2" color="text.secondary">{item.a}</Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
         {/* CTA Section */}
         <motion.div
            initial={{ opacity: 0, scale: 0.95 }}

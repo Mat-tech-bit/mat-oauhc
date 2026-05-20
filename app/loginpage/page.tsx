@@ -66,127 +66,198 @@ export default function LoginPage() {
       sx={{ 
         minHeight: '100vh', 
         display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
         bgcolor: 'background.default',
-        backgroundImage: theme.palette.mode === 'dark' 
-          ? 'radial-gradient(at 0% 0%, rgba(25, 118, 210, 0.1) 0, transparent 50%)' 
-          : 'radial-gradient(at 0% 0%, rgba(25, 118, 210, 0.05) 0, transparent 50%)',
-        p: 2,
         overflow: 'hidden'
       }}
     >
-      <Container maxWidth="sm">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+      <Grid container sx={{ flexGrow: 1 }}>
+        {/* Left Side: Branding & Info (Hidden on mobile) */}
+        <Grid 
+          size={{ xs: 0, md: 6, lg: 7 }} 
+          sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+            bgcolor: '#0f172a',
+            color: 'white',
+            p: 8,
+            textAlign: 'center',
+          }}
         >
-          <Paper 
-            elevation={0} 
+          {/* Decorative background element */}
+          <Box 
             sx={{ 
-                p: { xs: 3, md: 6 }, 
-                borderRadius: 8, 
-                border: '1px solid',
-                borderColor: 'divider',
-                bgcolor: 'background.paper',
-                boxShadow: theme.palette.mode === 'dark' ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : '0 25px 50px -12px rgba(0, 0, 0, 0.05)',
-                mx: { xs: 1, md: 0 }
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: 'url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.15,
+              zIndex: 1
             }}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
-              <motion.div
-                initial={{ transform: 'rotate(-45deg)', opacity: 0 }}
-                animate={{ transform: 'rotate(0deg)', opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56, mb: 2, boxShadow: '0 8px 16px rgba(25, 118, 210, 0.2)' }}>
-                  <MedicalServicesIcon />
-                </Avatar>
-              </motion.div>
-              <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: -1, color: 'text.primary' }}>
-                Welcome Back
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Login to your student health portal
-              </Typography>
-            </Box>
-
-            {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 3 }}>{error}</Alert>}
-            {message && <Alert severity="success" sx={{ mb: 3, borderRadius: 3 }}>{message}</Alert>}
-
-            <form onSubmit={handleLogin}>
-              <Stack spacing={3}>
-                <TextField 
-                  fullWidth 
-                  label="Student Email" 
-                  autoFocus
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                
-                <TextField 
-                  fullWidth 
-                  label="Portal Password" 
-                  type={showPassword ? 'text' : 'password'}
-                  onChange={(e) => setPassword(e.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => setShowPassword(!showPassword)}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-
-                <Button 
-                  fullWidth 
-                  variant="contained" 
-                  type="submit" 
-                  disabled={loading}
-                  sx={{ 
-                    height: 56, 
-                    borderRadius: 3, 
-                    fontWeight: 800, 
-                    fontSize: '1rem',
-                    transition: '0.3s',
-                    '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 8px 16px rgba(25, 118, 210, 0.3)' }
-                  }}
-                >
-                  {loading ? <CircularProgress size={24} color="inherit" /> : "Access Dashboard"}
-                </Button>
-              </Stack>
-            </form>
-
-            <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-              <Button 
-                onClick={handleForgotPassword} 
-                sx={{ textTransform: 'none', fontWeight: 600, color: 'text.secondary', '&:hover': { textDecoration: 'underline', bgcolor: 'transparent' } }}
-              >
-                Having trouble signing in?
-              </Button>
-              <Typography variant="body2" color="text.secondary">
-                Don't have an account?{' '}
-                <Button 
-                  component={Link} 
-                  href="/registrationpage" 
-                  sx={{ fontWeight: 800, color: 'primary.main', textTransform: 'none', minWidth: 0, p: 0.5, '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' } }}
-                >
-                  Register here
-                </Button>
-              </Typography>
-            </Box>
-          </Paper>
+          />
           
-          <Typography align="center" variant="caption" sx={{ display: 'block', mt: 4, color: 'text.disabled', fontWeight: 500 }}>
-             &copy; {new Date().getFullYear()} Obafemi Awolowo University Health Center
-          </Typography>
-        </motion.div>
-      </Container>
+          <Box sx={{ position: 'relative', zIndex: 2, maxWidth: 600 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Avatar sx={{ bgcolor: 'primary.main', width: 80, height: 80, mb: 4, mx: 'auto', boxShadow: '0 0 40px rgba(25, 118, 210, 0.4)' }}>
+                <MedicalServicesIcon sx={{ fontSize: 40 }} />
+              </Avatar>
+              <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, letterSpacing: -1, lineHeight: 1.1 }}>
+                Ensuring a <span style={{ color: theme.palette.primary.main }}>Healthier</span> <br /> Campus Life.
+              </Typography>
+              <Typography variant="h6" sx={{ opacity: 0.8, fontWeight: 300, lineHeight: 1.6, mb: 6 }}>
+                Welcome to the OAU Health Center Digital Portal. Access your records, book appointments, and manage your health with ease.
+              </Typography>
+              
+              <Grid container spacing={4} sx={{ textAlign: 'left' }}>
+                {[
+                  { title: 'Secure', desc: 'Encrypted patient data storage.' },
+                  { title: 'Fast', desc: 'Instant access to medical history.' },
+                  { title: 'Reliable', desc: '24/7 service availability.' }
+                ].map((item, i) => (
+                  <Grid size={4} key={i}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'primary.main' }}>{item.title}</Typography>
+                    <Typography variant="caption" sx={{ opacity: 0.6 }}>{item.desc}</Typography>
+                  </Grid>
+                ))}
+              </Grid>
+            </motion.div>
+          </Box>
+        </Grid>
+
+        {/* Right Side: Login Form */}
+        <Grid 
+          size={{ xs: 12, md: 6, lg: 5 }}
+          sx={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: { xs: 2, sm: 4, md: 8 },
+            bgcolor: 'background.default'
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{ width: '100%', maxWidth: 450 }}
+          >
+            <Paper 
+              elevation={0} 
+              sx={{ 
+                  p: { xs: 4, md: 6 }, 
+                  borderRadius: 6, 
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  bgcolor: 'background.paper',
+                  boxShadow: theme.palette.mode === 'dark' ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : '0 25px 50px -12px rgba(0, 0, 0, 0.05)',
+              }}
+            >
+              <Box sx={{ mb: 4 }}>
+                <Box sx={{ display: { md: 'none' }, mb: 3 }}>
+                    <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mb: 2 }}>
+                        <MedicalServicesIcon />
+                    </Avatar>
+                </Box>
+                <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: -1, color: 'text.primary' }}>
+                  Welcome Back
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  Login to your student health portal
+                </Typography>
+              </Box>
+
+              {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 3 }}>{error}</Alert>}
+              {message && <Alert severity="success" sx={{ mb: 3, borderRadius: 3 }}>{message}</Alert>}
+
+              <form onSubmit={handleLogin}>
+                <Stack spacing={3}>
+                  <TextField 
+                    fullWidth 
+                    label="Student Email" 
+                    variant="outlined"
+                    autoFocus
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                  />
+                  
+                  <TextField 
+                    fullWidth 
+                    label="Portal Password" 
+                    type={showPassword ? 'text' : 'password'}
+                    variant="outlined"
+                    onChange={(e) => setPassword(e.target.value)}
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+
+                  <Button 
+                    fullWidth 
+                    variant="contained" 
+                    type="submit" 
+                    disabled={loading}
+                    sx={{ 
+                      height: 56, 
+                      borderRadius: 3, 
+                      fontWeight: 800, 
+                      fontSize: '1rem',
+                      mt: 2,
+                      boxShadow: '0 8px 24px rgba(25, 118, 210, 0.3)',
+                      transition: '0.3s',
+                      '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 12px 32px rgba(25, 118, 210, 0.4)' }
+                    }}
+                  >
+                    {loading ? <CircularProgress size={24} color="inherit" /> : "Access Dashboard"}
+                  </Button>
+                </Stack>
+              </form>
+
+              <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                <Button 
+                  onClick={handleForgotPassword} 
+                  sx={{ textTransform: 'none', fontWeight: 600, color: 'text.secondary', '&:hover': { textDecoration: 'underline', bgcolor: 'transparent' } }}
+                >
+                  Having trouble signing in?
+                </Button>
+                <Typography variant="body2" color="text.secondary">
+                  Don't have an account?{' '}
+                  <Button 
+                    component={Link} 
+                    href="/registrationpage" 
+                    sx={{ fontWeight: 800, color: 'primary.main', textTransform: 'none', minWidth: 0, p: 0.5, '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' } }}
+                  >
+                    Register here
+                  </Button>
+                </Typography>
+              </Box>
+            </Paper>
+            <Typography align="center" variant="caption" sx={{ display: 'block', mt: 4, color: 'text.disabled', fontWeight: 500 }}>
+              &copy; {new Date().getFullYear()} Obafemi Awolowo University Health Center
+            </Typography>
+          </motion.div>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

@@ -202,6 +202,68 @@ const HomePage = () => {
         </Container>
       </Box>
 
+      {/* 1.5 QUICK ACTIONS BAR */}
+      <Box 
+        sx={{ 
+          position: 'relative', 
+          zIndex: 10, 
+          mt: -5, 
+          px: { xs: 2, md: 0 } 
+        }}
+      >
+        <Container>
+          <Paper 
+            elevation={24}
+            sx={{ 
+              p: { xs: 3, md: 4 }, 
+              borderRadius: 4, 
+              bgcolor: 'background.paper',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+              border: '1px solid',
+              borderColor: 'divider'
+            }}
+          >
+            <Grid container spacing={3} alignItems="center">
+              {[
+                { icon: <HealthAndSafetyIcon />, label: 'Emergency', sub: '24/7 Hotline', color: '#f44336' },
+                { icon: <EventAvailableIcon />, label: 'Appointments', sub: 'Book Online', color: '#2196f3' },
+                { icon: <SpeedIcon />, label: 'Lab Results', sub: 'Check Status', color: '#4caf50' },
+                { icon: <MedicationIcon />, label: 'Pharmacy', sub: 'E-Prescriptions', color: '#ff9800' }
+              ].map((action, i) => (
+                <Grid size={{ xs: 6, md: 3 }} key={i}>
+                  <Box 
+                    sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: 2,
+                      cursor: 'pointer',
+                      transition: '0.2s',
+                      '&:hover': { transform: 'translateY(-3px)' }
+                    }}
+                  >
+                    <Box 
+                      sx={{ 
+                        p: 1.5, 
+                        bgcolor: `${action.color}15`, 
+                        color: action.color, 
+                        borderRadius: 2,
+                        display: 'flex'
+                      }}
+                    >
+                      {action.icon}
+                    </Box>
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 800, lineHeight: 1.2 }}>{action.label}</Typography>
+                      <Typography variant="caption" color="text.secondary">{action.sub}</Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Paper>
+        </Container>
+      </Box>
+
       {/* 2. STATS SECTION */}
       <Box sx={{ bgcolor: 'action.hover', py: { xs: 8, md: 10 }, borderBottom: '1px solid', borderColor: 'divider' }}>
         <Container>
@@ -313,6 +375,81 @@ const HomePage = () => {
                 </motion.div>
               </Grid>
             ))}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* 3.5 DEPARTMENTS SECTION */}
+      <Box sx={{ py: { xs: 10, md: 16 }, bgcolor: 'background.default', position: 'relative' }}>
+        <Container>
+          <Grid container spacing={6} alignItems="center">
+            <Grid size={{ xs: 12, md: 5 }}>
+              <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 900, letterSpacing: 2 }}>Our Specializations</Typography>
+              <Typography variant="h3" sx={{ fontWeight: 900, mt: 2, mb: 4, lineHeight: 1.2 }}>Comprehensive care for the OAU community.</Typography>
+              <Typography color="text.secondary" sx={{ mb: 6, fontSize: '1.1rem' }}>
+                Our health center is equipped with various specialized departments to cater to all your medical needs without leaving campus.
+              </Typography>
+              <Stack spacing={3}>
+                {[
+                  'General Practice & Primary Care',
+                  'Dental & Oral Health Clinic',
+                  'Optometry & Eye Care',
+                  'Laboratory & Diagnostic Services',
+                  'Radiology & X-Ray Unit',
+                  'Maternal & Reproductive Health'
+                ].map((dept, i) => (
+                  <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 8, height: 8, bgcolor: 'primary.main', borderRadius: '50%' }} />
+                    <Typography variant="body1" sx={{ fontWeight: 700 }}>{dept}</Typography>
+                  </Box>
+                ))}
+              </Stack>
+            </Grid>
+            <Grid size={{ xs: 12, md: 7 }}>
+              <Grid container spacing={3}>
+                {[
+                  { title: 'In-Patient', img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+                  { title: 'Emergency', img: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+                  { title: 'Laboratory', img: 'https://images.unsplash.com/photo-1581093458791-9f3c3250bb8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+                  { title: 'Pharmacy', img: 'https://images.unsplash.com/photo-1586015555751-63bb77f4322a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+                ].map((item, i) => (
+                  <Grid size={{ xs: 6, md: 6 }} key={i}>
+                    <Box 
+                      sx={{ 
+                        position: 'relative', 
+                        height: { xs: 200, md: 280 }, 
+                        borderRadius: 4, 
+                        overflow: 'hidden',
+                        mt: i % 2 !== 0 ? { md: 4 } : 0,
+                        '&:hover .overlay': { opacity: 1 },
+                        '&:hover img': { scale: '1.1' }
+                      }}
+                    >
+                      <img 
+                        src={item.img} 
+                        alt={item.title} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: '0.6s' }} 
+                      />
+                      <Box 
+                        className="overlay"
+                        sx={{ 
+                          position: 'absolute', 
+                          inset: 0, 
+                          bgcolor: 'rgba(25, 118, 210, 0.8)', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center',
+                          opacity: 0,
+                          transition: '0.4s'
+                        }}
+                      >
+                        <Typography variant="h6" sx={{ color: 'white', fontWeight: 900 }}>{item.title}</Typography>
+                      </Box>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
           </Grid>
         </Container>
       </Box>

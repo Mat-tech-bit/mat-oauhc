@@ -56,9 +56,12 @@ export default function Navbar() {
       sx={{ 
         top: 0, 
         zIndex: 1100,
-        bgcolor: theme.palette.mode === 'dark' ? 'background.paper' : 'primary.main',
+        bgcolor: theme.palette.mode === 'dark' ? 'rgba(15, 23, 42, 0.8)' : 'rgba(25, 118, 210, 0.9)',
+        backdropFilter: 'blur(10px)',
         backgroundImage: 'none',
-        boxShadow: theme.palette.mode === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.1)'
+        boxShadow: theme.palette.mode === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.1)',
+        borderBottom: '1px solid',
+        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
       }}
     >
       <Container maxWidth="xl">
