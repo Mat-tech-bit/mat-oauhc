@@ -60,7 +60,7 @@ const HomePage = () => {
         {/* Background Image with Overlay */}
         <motion.div
           initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.35 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 2 }}
           style={{
             position: 'absolute',
@@ -68,28 +68,57 @@ const HomePage = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundImage: `url('/health_center_hero_bg_1777154509472.png')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            background: theme.palette.mode === 'dark' 
+              ? 'radial-gradient(circle at 70% 30%, rgba(2, 132, 199, 0.15) 0%, rgba(15, 23, 42, 1) 70%)'
+              : 'radial-gradient(circle at 70% 30%, rgba(2, 132, 199, 0.05) 0%, rgba(248, 250, 252, 1) 70%)',
             zIndex: 1,
           }}
         />
         
-        {/* Gradient Overlay */}
+        {/* Mesh Gradient Background */}
         <Box 
           sx={{ 
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: {
-              xs: 'radial-gradient(circle, rgba(12, 18, 33, 0.95) 0%, rgba(12, 18, 33, 0.7) 100%)',
-              md: 'linear-gradient(90deg, rgba(12, 18, 33, 0.95) 0%, rgba(12, 18, 33, 0.3) 100%)'
-            },
-            zIndex: 2,
+            inset: 0,
+            overflow: 'hidden',
+            zIndex: 1,
+            bgcolor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc'
           }}
-        />
+        >
+          <Box 
+            sx={{
+              position: 'absolute',
+              top: '-10%',
+              right: '-10%',
+              width: '60%',
+              height: '80%',
+              background: 'radial-gradient(circle, rgba(2, 132, 199, 0.15) 0%, transparent 70%)',
+              filter: 'blur(80px)',
+              borderRadius: '50%',
+            }}
+          />
+          <Box 
+            sx={{
+              position: 'absolute',
+              bottom: '-10%',
+              left: '-10%',
+              width: '50%',
+              height: '70%',
+              background: 'radial-gradient(circle, rgba(2, 132, 199, 0.1) 0%, transparent 70%)',
+              filter: 'blur(100px)',
+              borderRadius: '50%',
+            }}
+          />
+          <Box 
+            sx={{ 
+              position: 'absolute',
+              inset: 0,
+              opacity: 0.15,
+              backgroundImage: 'radial-gradient(#0284c7 0.5px, transparent 0.5px)',
+              backgroundSize: '30px 30px',
+            }}
+          />
+        </Box>
 
         <Container maxWidth="xl">
           <Grid container spacing={8} alignItems="center" sx={{ minHeight: '80vh' }}>
@@ -103,7 +132,8 @@ const HomePage = () => {
                     letterSpacing: 4, 
                     display: 'block', 
                     mb: { xs: 2, md: 3 },
-                    fontSize: { xs: '0.8rem', md: '1rem' }
+                    fontSize: { xs: '0.8rem', md: '1rem' },
+                    opacity: theme.palette.mode === 'dark' ? 1 : 0.8
                   }}
                 >
                   ADVANCED CAMPUS HEALTHCARE
@@ -118,8 +148,8 @@ const HomePage = () => {
                     mb: 3, 
                     fontSize: { xs: '2.5rem', sm: '3.5rem', md: '5.5rem' },
                     lineHeight: { xs: 1.1, md: 1.1 },
-                    textShadow: '0 8px 16px rgba(0,0,0,0.4)',
-                    color: 'white'
+                    textShadow: theme.palette.mode === 'dark' ? '0 8px 16px rgba(0,0,0,0.4)' : 'none',
+                    color: theme.palette.mode === 'dark' ? 'white' : '#0f172a'
                   }}
                 >
                   Smart Health <br />
@@ -136,8 +166,7 @@ const HomePage = () => {
                     opacity: 0.85, 
                     lineHeight: 1.7,
                     fontSize: { xs: '1rem', md: '1.3rem' },
-                    maxWidth: { xs: '100%', md: '85%' },
-                    color: 'white'
+                    color: theme.palette.mode === 'dark' ? 'white' : '#0f172a'
                   }}
                 >
                   Experience seamless medical services at OAU. 
@@ -237,17 +266,30 @@ const HomePage = () => {
                 </Paper>
               </motion.div>
 
-              {/* Trust/Stats indicators */}
+              {/* Refined Stats section */}
               <motion.div variants={fadeInUp}>
-                <Grid container spacing={6} sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                <Grid container spacing={3} sx={{ mt: 2 }}>
                   {[
-                    { label: 'Active Students', val: '35,000+' },
-                    { label: 'Staff Radiologists', val: '24/7' },
-                    { label: 'Verified Profile', val: 'Security Enabled' }
+                    { label: 'Active Students', val: '35,000+', color: '#0ea5e9' },
+                    { label: 'Medical Staff', val: '120+', color: '#10b981' },
+                    { label: 'Verified Profile', val: 'Secured SSL', color: '#6366f1' }
                   ].map((stat, i) => (
                     <Grid size={{ xs: 12, sm: 4 }} key={i}>
-                      <Typography variant="h4" sx={{ fontWeight: 900, color: 'primary.main', mb: 0.5 }}>{stat.val}</Typography>
-                      <Typography variant="caption" sx={{ color: 'white', opacity: 0.6, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.5 }}>{stat.label}</Typography>
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          p: 2,
+                          textAlign: { xs: 'center', md: 'left' },
+                          bgcolor: 'rgba(255,255,255,0.03)',
+                          border: '1px solid rgba(255,255,255,0.05)',
+                          borderRadius: 3,
+                          transition: '0.3s',
+                          '&:hover': { bgcolor: 'rgba(255,255,255,0.05)', transform: 'translateY(-4px)' }
+                        }}
+                      >
+                        <Typography variant="h5" sx={{ fontWeight: 900, color: 'white', mb: 0.5 }}>{stat.val}</Typography>
+                        <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>{stat.label}</Typography>
+                      </Paper>
                     </Grid>
                   ))}
                 </Grid>
@@ -316,38 +358,44 @@ const HomePage = () => {
               borderColor: 'divider'
             }}
           >
-            <Grid container spacing={3} alignItems="center">
+            <Grid container spacing={4} alignItems="center">
               {[
-                { icon: <HealthAndSafetyIcon />, label: 'Emergency', sub: '24/7 Hotline', color: '#f44336' },
-                { icon: <EventAvailableIcon />, label: 'Appointments', sub: 'Book Online', color: '#2196f3' },
-                { icon: <SpeedIcon />, label: 'Lab Results', sub: 'Check Status', color: '#4caf50' },
-                { icon: <MedicationIcon />, label: 'Pharmacy', sub: 'E-Prescriptions', color: '#ff9800' }
+                { icon: <HealthAndSafetyIcon />, label: 'Emergency', sub: '24/7 Response', color: '#f43f5e' },
+                { icon: <EventAvailableIcon />, label: 'Appointments', sub: 'Book Online', color: '#3b82f6' },
+                { icon: <SpeedIcon />, label: 'Lab Results', sub: 'Instant Check', color: '#10b981' },
+                { icon: <MedicationIcon />, label: 'Pharmacy', sub: 'E-Prescription', color: '#f59e0b' }
               ].map((action, i) => (
-                <Grid size={{ xs: 6, md: 3 }} key={i}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
                   <Box 
                     sx={{ 
                       display: 'flex', 
                       alignItems: 'center', 
-                      gap: 2,
+                      gap: 3,
+                      p: 1.5,
+                      borderRadius: 4,
                       cursor: 'pointer',
-                      transition: '0.2s',
-                      '&:hover': { transform: 'translateY(-3px)' }
+                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      '&:hover': { 
+                        bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.02)',
+                        transform: 'translateY(-6px)' 
+                      }
                     }}
                   >
                     <Box 
                       sx={{ 
-                        p: 1.5, 
+                        p: 2, 
                         bgcolor: `${action.color}15`, 
                         color: action.color, 
-                        borderRadius: 2,
-                        display: 'flex'
+                        borderRadius: 3,
+                        display: 'flex',
+                        boxShadow: `0 10px 25px -5px ${action.color}30`
                       }}
                     >
                       {action.icon}
                     </Box>
                     <Box>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800, lineHeight: 1.2 }}>{action.label}</Typography>
-                      <Typography variant="caption" color="text.secondary">{action.sub}</Typography>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 900, lineHeight: 1.2 }}>{action.label}</Typography>
+                      <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600 }}>{action.sub}</Typography>
                     </Box>
                   </Box>
                 </Grid>
