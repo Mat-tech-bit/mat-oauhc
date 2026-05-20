@@ -90,13 +90,9 @@ const HomePage = () => {
           }}
         />
 
-        <Container sx={{ position: 'relative', zIndex: 3 }}>
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-          >
-            <Box sx={{ maxWidth: 800, textAlign: { xs: 'center', md: 'left' }, mx: { xs: 'auto', md: 0 } }}>
+        <Container maxWidth="xl">
+          <Grid container spacing={8} alignItems="center" sx={{ minHeight: '80vh' }}>
+            <Grid size={{ xs: 12, md: 7 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
               <motion.div variants={fadeInUp}>
                 <Typography 
                   variant="overline" 
@@ -106,7 +102,7 @@ const HomePage = () => {
                     letterSpacing: 4, 
                     display: 'block', 
                     mb: { xs: 2, md: 3 },
-                    fontSize: { xs: '0.75rem', md: '0.9rem' }
+                    fontSize: { xs: '0.8rem', md: '1rem' }
                   }}
                 >
                   ADVANCED CAMPUS HEALTHCARE
@@ -119,14 +115,14 @@ const HomePage = () => {
                   sx={{ 
                     fontWeight: 900, 
                     mb: 3, 
-                    fontSize: { xs: '2.2rem', sm: '3rem', md: '5rem' },
-                    lineHeight: { xs: 1.2, md: 1.1 },
+                    fontSize: { xs: '2.5rem', sm: '3.5rem', md: '5.5rem' },
+                    lineHeight: { xs: 1.1, md: 1.1 },
                     textShadow: '0 8px 16px rgba(0,0,0,0.4)',
                     color: 'white'
                   }}
                 >
-                  Smart Healthcare <br />
-                  <span style={{ color: theme.palette.primary.main }}>For Every Student.</span>
+                  Smart Health <br />
+                  <span style={{ color: theme.palette.primary.main }}>For OAU Students.</span>
                 </Typography>
               </motion.div>
 
@@ -137,68 +133,165 @@ const HomePage = () => {
                     mb: 5, 
                     fontWeight: 300, 
                     opacity: 0.85, 
-                    lineHeight: 1.6,
-                    fontSize: { xs: '0.95rem', md: '1.25rem' },
-
-                    maxWidth: { xs: '100%', md: '90%' },
+                    lineHeight: 1.7,
+                    fontSize: { xs: '1rem', md: '1.3rem' },
+                    maxWidth: { xs: '100%', md: '85%' },
                     color: 'white'
                   }}
                 >
-                  Experience seamless medical services at Obafemi Awolowo University. 
-                  Book appointments, access your records, and receive prescriptions 
-                  securely through our state-of-the-art digital health portal.
+                  Experience seamless medical services at OAU. 
+                  Book appointments, access records, and receive prescriptions 
+                  securely through the official digital health portal.
                 </Typography>
               </motion.div>
 
               <motion.div variants={fadeInUp}>
                 <Stack 
                   direction={{ xs: 'column', sm: 'row' }} 
-                  spacing={2} 
+                  spacing={3} 
                   justifyContent={{ xs: 'center', md: 'flex-start' }}
-                  sx={{ width: '100%' }}
+                  sx={{ width: '100%', mb: 8 }}
                 >
                   <Button 
-                    component={Link} 
-                    href="/registrationpage" 
+                    component={Link}
+                    href="/registrationpage"
                     variant="contained" 
                     size="large"
-                    endIcon={<ArrowForwardIcon />}
                     sx={{ 
-                      py: 2.2, 
-                      px: 5, 
-                      fontWeight: 900, 
-                      borderRadius: 2,
-                      fontSize: '1rem',
-                      boxShadow: '0 12px 24px rgba(25, 118, 210, 0.4)',
-                      transition: '0.3s',
-                      '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 15px 30px rgba(25, 118, 210, 0.5)' }
+                      bgcolor: theme.palette.primary.main, 
+                      color: 'white', 
+                      px: 6, 
+                      py: 2.5, 
+                      borderRadius: 3, 
+                      fontWeight: 900,
+                      fontSize: '1.1rem',
+                      boxShadow: '0 12px 32px rgba(25, 118, 210, 0.4)',
+                      '&:hover': { transform: 'translateY(-4px)', bgcolor: theme.palette.primary.dark }
                     }}
                   >
-                    Get Started
+                    Get Started Now
                   </Button>
                   <Button 
-                    component={Link} 
-                    href="/loginpage" 
+                    component={Link}
+                    href="/loginpage"
                     variant="outlined" 
                     size="large"
                     sx={{ 
-                      py: 2.2, 
-                      px: 5, 
-                      fontWeight: 900, 
-                      borderRadius: 2,
-                      fontSize: '1rem',
-                      color: 'white',
-                      borderColor: 'rgba(255,255,255,0.4)',
-                      transition: '0.3s',
-                      '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)', transform: 'translateY(-3px)' }
+                      borderColor: 'rgba(255,255,255,0.4)', 
+                      color: 'white', 
+                      px: 6, 
+                      py: 2.5, 
+                      borderRadius: 3, 
+                      fontWeight: 900,
+                      fontSize: '1.1rem',
+                      backdropFilter: 'blur(10px)',
+                      '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)', transform: 'translateY(-4px)' }
                     }}
                   >
                     Portal Login
                   </Button>
                 </Stack>
               </motion.div>
-            </Box>
-          </motion.div>
+
+              {/* Added: Professional Search Bar Placeholder */}
+              <motion.div variants={fadeInUp}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        p: 0.5,
+                        pl: 3,
+                        display: 'flex',
+                        alignItems: 'center',
+                        maxWidth: 550,
+                        borderRadius: 5,
+                        bgcolor: 'rgba(255,255,255,0.1)',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        backdropFilter: 'blur(20px)',
+                        mb: 8,
+                        display: { xs: 'none', lg: 'flex' },
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+                    }}
+                >
+                    <Box sx={{ flexGrow: 1 }}>
+                        <TextField 
+                            fullWidth 
+                            variant="standard" 
+                            placeholder="Find services, clinics or health tips..." 
+                            InputProps={{ disableUnderline: true, sx: { color: 'white', fontSize: '0.95rem' } }}
+                        />
+                    </Box>
+                    <Button 
+                      variant="contained" 
+                      sx={{ 
+                        borderRadius: 4, 
+                        px: 4, 
+                        py: 1.5, 
+                        fontWeight: 900,
+                        bgcolor: 'white',
+                        color: 'primary.main',
+                        '&:hover': { bgcolor: '#f0f0f0' }
+                      }}
+                    >
+                      Search
+                    </Button>
+                </Paper>
+              </motion.div>
+
+              {/* Trust/Stats indicators */}
+              <motion.div variants={fadeInUp}>
+                <Grid container spacing={6} sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                  {[
+                    { label: 'Active Students', val: '35,000+' },
+                    { label: 'Staff Radiologists', val: '24/7' },
+                    { label: 'Verified Profile', val: 'Security Enabled' }
+                  ].map((stat, i) => (
+                    <Grid size={{ xs: 12, sm: 4 }} key={i}>
+                      <Typography variant="h4" sx={{ fontWeight: 900, color: 'primary.main', mb: 0.5 }}>{stat.val}</Typography>
+                      <Typography variant="caption" sx={{ color: 'white', opacity: 0.6, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.5 }}>{stat.label}</Typography>
+                    </Grid>
+                  ))}
+                </Grid>
+              </motion.div>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
+              <motion.div
+                initial={{ opacity: 0, x: 50, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ duration: 1.2, ease: 'easeOut' }}
+              >
+                <Box 
+                  sx={{ 
+                    position: 'relative',
+                    zIndex: 2,
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: '15%',
+                      left: '15%',
+                      width: '70%',
+                      height: '70%',
+                      bgcolor: 'primary.main',
+                      filter: 'blur(150px)',
+                      opacity: 0.3,
+                      zIndex: -1
+                    }
+                  }}
+                >
+                  <img 
+                    src="/hero_medical_illustration_1779299682139.png" 
+                    alt="Digital Health Interface" 
+                    style={{ 
+                      width: '100%', 
+                      height: 'auto', 
+                      display: 'block',
+                      filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.6))'
+                    }} 
+                  />
+                </Box>
+              </motion.div>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
 
@@ -649,6 +742,98 @@ const HomePage = () => {
           </Paper>
         </motion.div>
       </Container>
+
+
+      {/* 7. LATEST HEALTH NEWS SECTION */}
+      <Box sx={{ py: 14, bgcolor: 'background.default' }}>
+        <Container>
+          <Box sx={{ mb: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            <Box>
+              <Typography variant="overline" color="primary" sx={{ fontWeight: 900, letterSpacing: 2 }}>Campus Wellness</Typography>
+              <Typography variant="h3" sx={{ fontWeight: 900, mt: 1 }}>Latest Health Updates</Typography>
+            </Box>
+            <Button variant="text" sx={{ fontWeight: 800 }}>View All News</Button>
+          </Box>
+          <Grid container spacing={4}>
+            {[
+              { 
+                tag: 'Vaccination', 
+                title: 'Upcoming COVID-19 Booster Clinic at Health Center', 
+                date: 'May 24, 2024',
+                image: 'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+              },
+              { 
+                tag: 'Insurance', 
+                title: 'New NHIS Registration Guidelines for Freshers', 
+                date: 'May 20, 2024',
+                image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+              },
+              { 
+                tag: 'Wellness', 
+                title: 'Mental Health Awareness Week: Resources and Events', 
+                date: 'May 15, 2024',
+                image: 'https://images.unsplash.com/photo-1527137342181-19aab11a8ee1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+              }
+            ].map((news, i) => (
+              <Grid size={{ xs: 12, md: 4 }} key={i}>
+                <Card elevation={0} sx={{ borderRadius: 6, bgcolor: 'transparent', height: '100%', '&:hover img': { transform: 'scale(1.05)' } }}>
+                  <Box sx={{ height: 240, borderRadius: 6, overflow: 'hidden', mb: 3 }}>
+                    <img src={news.image} alt={news.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: '0.6s' }} />
+                  </Box>
+                  <Typography variant="caption" sx={{ fontWeight: 800, color: 'primary.main', textTransform: 'uppercase', letterSpacing: 1 }}>{news.tag}</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 900, mt: 1, mb: 2, lineHeight: 1.3 }}>{news.title}</Typography>
+                  <Typography variant="body2" color="text.secondary">{news.date}</Typography>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* 8. QUICK CONTACT / EMERGENCY BANNER */}
+      <Box sx={{ py: 6, bgcolor: '#0f172a' }}>
+        <Container>
+          <Paper 
+            elevation={0} 
+            sx={{ 
+                p: { xs: 4, md: 6 }, 
+                borderRadius: 8, 
+                background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+                color: 'white',
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 4
+            }}
+          >
+            <Box>
+              <Typography variant="h4" sx={{ fontWeight: 900, mb: 1 }}>Medical Emergency?</Typography>
+              <Typography sx={{ opacity: 0.9 }}>Our emergency response team is available 24/7 for on-campus student assistance.</Typography>
+            </Box>
+            <Stack direction="row" spacing={3} alignItems="center">
+              <Box sx={{ textAlign: { xs: 'center', md: 'right' } }}>
+                <Typography variant="h3" sx={{ fontWeight: 900 }}>2223</Typography>
+                <Typography variant="caption" sx={{ opacity: 0.7, textTransform: 'uppercase' }}>Campus Emergency Line</Typography>
+              </Box>
+              <Button 
+                variant="contained" 
+                sx={{ 
+                    bgcolor: 'white', 
+                    color: 'primary.main', 
+                    px: 4, 
+                    py: 2, 
+                    borderRadius: 3, 
+                    fontWeight: 900,
+                    '&:hover': { bgcolor: '#f0f0f0' }
+                }}
+              >
+                Call Now
+              </Button>
+            </Stack>
+          </Paper>
+        </Container>
+      </Box>
     </Box>
   );
 };

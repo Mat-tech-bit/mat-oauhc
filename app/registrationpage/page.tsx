@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { registerUser } from '../library/auth';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 
 export default function RegistrationForm() {
   const router = useRouter();
@@ -148,44 +149,78 @@ export default function RegistrationForm() {
             position: 'relative'
           }}
         >
-          <Box sx={{ position: 'relative', zIndex: 2 }}>
-            <Typography variant="h3" sx={{ fontWeight: 900, mb: 3, letterSpacing: -1 }}>
-              Start Your <span style={{ color: '#2196f3' }}>Digital</span> Health Journey.
-            </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.8, mb: 6, lineHeight: 1.7 }}>
-              Registering for the digital portal is the first step towards faster medical response and organized health records.
-            </Typography>
-            
-            <Stack spacing={4}>
-              {[
-                { step: '1', title: 'Bio-Data', desc: 'Provide your basic student identification details.' },
-                { step: '2', title: 'Medical Info', desc: 'Help us understand your medical background for better care.' },
-                { step: '3', title: 'Security', desc: 'Set up your secure credentials for portal access.' }
-              ].map((item, i) => (
-                <Box key={i} sx={{ display: 'flex', gap: 3 }}>
-                  <Box 
-                    sx={{ 
-                      width: 40, 
-                      height: 40, 
-                      borderRadius: '50%', 
-                      bgcolor: activeStep >= i ? 'primary.main' : 'rgba(255,255,255,0.1)', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'center',
-                      fontWeight: 900,
-                      flexShrink: 0,
-                      transition: '0.3s'
-                    }}
-                  >
-                    {item.step}
+          <Box sx={{ position: 'relative', zIndex: 3, maxWidth: 450 }}>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Avatar 
+                sx={{ 
+                  bgcolor: 'white', 
+                  width: 64, 
+                  height: 64, 
+                  mb: 4, 
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.3)' 
+                }}
+              >
+                <MedicalServicesIcon sx={{ color: 'primary.main', fontSize: 32 }} />
+              </Avatar>
+              
+              <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, letterSpacing: -2, lineHeight: 1 }}>
+                Digital Health <br />
+                <span style={{ color: '#2196f3' }}>Portal.</span>
+              </Typography>
+              
+              <Typography variant="body1" sx={{ opacity: 0.8, mb: 6, lineHeight: 1.7, fontSize: '1.1rem', fontWeight: 300 }}>
+                Join the official OAU healthcare ecosystem. Manage your records, book appointments, and stay healthy.
+              </Typography>
+              
+              <Stack spacing={5}>
+                {[
+                  { step: '01', title: 'Bio-Data', desc: 'Securely upload your academic identity.' },
+                  { step: '02', title: 'Health Profile', desc: 'Share critical medical info with doctors.' },
+                  { step: '03', title: 'Secured Access', desc: 'Set up your encrypted login profile.' }
+                ].map((item, i) => (
+                  <Box key={i} sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+                    <Box 
+                      sx={{ 
+                        width: 50, 
+                        height: 50, 
+                        borderRadius: '16px', 
+                        bgcolor: activeStep >= i ? 'primary.main' : 'rgba(255,255,255,0.1)', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        fontWeight: 900,
+                        flexShrink: 0,
+                        transition: '0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        fontSize: '1.2rem',
+                        border: activeStep >= i ? 'none' : '1px solid rgba(255,255,255,0.1)'
+                      }}
+                    >
+                      {item.step}
+                    </Box>
+                    <Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 900, color: 'white' }}>{item.title}</Typography>
+                      <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.2 }}>{item.desc}</Typography>
+                    </Box>
                   </Box>
-                  <Box>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>{item.title}</Typography>
-                    <Typography variant="caption" sx={{ opacity: 0.6 }}>{item.desc}</Typography>
-                  </Box>
+                ))}
+              </Stack>
+
+              {/* Added Trust Badges */}
+              <Box sx={{ mt: 10, pt: 6, borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: 6 }}>
+                <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 900, color: 'white', mb: 0.5 }}>OAU</Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: 1 }}>Official Node</Typography>
                 </Box>
-              ))}
-            </Stack>
+                <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 900, color: 'white', mb: 0.5 }}>SSL+</Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: 1 }}>Encrypted</Typography>
+                </Box>
+              </Box>
+            </motion.div>
           </Box>
           
           {/* Decorative Overlay */}
@@ -205,17 +240,19 @@ export default function RegistrationForm() {
         </Grid>
 
         {/* Right Side: Registration Form */}
-        <Grid 
+          <Grid 
           size={{ xs: 12, md: 7, lg: 8 }}
           sx={{ 
             display: 'flex', 
             flexDirection: 'column',
-            p: { xs: 2, sm: 4, md: 8 },
+            p: { xs: 2, sm: 4, md: 6 },
             bgcolor: 'background.default',
-            overflowY: 'auto'
+            overflowY: 'auto',
+            backgroundImage: 'radial-gradient(#1976d208 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
           }}
         >
-          <Container maxWidth="md" sx={{ my: 'auto' }}>
+          <Container maxWidth="md" sx={{ my: { xs: 4, md: 'auto' } }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

@@ -103,34 +103,44 @@ export default function LoginPage() {
             }}
           />
           
-          <Box sx={{ position: 'relative', zIndex: 2, maxWidth: 600 }}>
+          <Box sx={{ position: 'relative', zIndex: 2, maxWidth: 600, textAlign: 'left' }}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <Avatar sx={{ bgcolor: 'primary.main', width: 80, height: 80, mb: 4, mx: 'auto', boxShadow: '0 0 40px rgba(25, 118, 210, 0.4)' }}>
-                <MedicalServicesIcon sx={{ fontSize: 40 }} />
+              <Avatar sx={{ bgcolor: 'white', width: 72, height: 72, mb: 4, boxShadow: '0 10px 40px rgba(0,0,0,0.5)' }}>
+                <MedicalServicesIcon sx={{ fontSize: 36, color: 'primary.main' }} />
               </Avatar>
-              <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, letterSpacing: -1, lineHeight: 1.1 }}>
-                Ensuring a <span style={{ color: theme.palette.primary.main }}>Healthier</span> <br /> Campus Life.
+              <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, letterSpacing: -2, lineHeight: 1 }}>
+                Healthier <br />
+                <span style={{ color: theme.palette.primary.main }}>Campus Life.</span>
               </Typography>
-              <Typography variant="h6" sx={{ opacity: 0.8, fontWeight: 300, lineHeight: 1.6, mb: 6 }}>
-                Welcome to the OAU Health Center Digital Portal. Access your records, book appointments, and manage your health with ease.
+              <Typography variant="h6" sx={{ opacity: 0.7, fontWeight: 300, lineHeight: 1.6, mb: 8, maxWidth: 450 }}>
+                Secure access to the OAU Health Center. Your medical history, prescriptions, and appointments in one place.
               </Typography>
               
-              <Grid container spacing={4} sx={{ textAlign: 'left' }}>
+              <Stack spacing={4}>
                 {[
-                  { title: 'Secure', desc: 'Encrypted patient data storage.' },
-                  { title: 'Fast', desc: 'Instant access to medical history.' },
-                  { title: 'Reliable', desc: '24/7 service availability.' }
+                  { title: 'Data Privacy', desc: 'Compliant with NHIS security standards.' },
+                  { title: 'Instant Booking', desc: 'No more long queues under the sun.' },
+                  { title: 'Electronic Health Records', desc: 'Your health history is always accessible.' }
                 ].map((item, i) => (
-                  <Grid size={4} key={i}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'primary.main' }}>{item.title}</Typography>
-                    <Typography variant="caption" sx={{ opacity: 0.6 }}>{item.desc}</Typography>
-                  </Grid>
+                  <Box key={i} sx={{ display: 'flex', gap: 2.5, alignItems: 'center' }}>
+                    <Box sx={{ width: 12, height: 12, bgcolor: 'primary.main', borderRadius: '50%' }} />
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'white' }}>{item.title}</Typography>
+                      <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>{item.desc}</Typography>
+                    </Box>
+                  </Box>
                 ))}
-              </Grid>
+              </Stack>
+              
+              {/* Trust markers */}
+              <Box sx={{ mt: 10, display: 'flex', gap: 4, opacity: 0.5 }}>
+                <Typography variant="overline" sx={{ fontWeight: 900, letterSpacing: 2 }}>SECURITY ENABLED</Typography>
+                <Typography variant="overline" sx={{ fontWeight: 900, letterSpacing: 2 }}>OAU OFFICIAL</Typography>
+              </Box>
             </motion.div>
           </Box>
         </Grid>
