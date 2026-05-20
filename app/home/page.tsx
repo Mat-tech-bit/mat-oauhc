@@ -200,7 +200,6 @@ const HomePage = () => {
                     sx={{
                         p: 0.5,
                         pl: 3,
-                        display: 'flex',
                         alignItems: 'center',
                         maxWidth: 550,
                         borderRadius: 5,
