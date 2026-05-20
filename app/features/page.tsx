@@ -66,7 +66,7 @@ const FeaturesPage = () => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '600px', py: { xs: 6, md: 10 } }}>
+    <Box sx={{ bgcolor: 'background.default', flex: 1, py: { xs: 6, md: 10 } }}>
       <Container maxWidth="lg">
         {/* Header Section */}
         <motion.div

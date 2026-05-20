@@ -134,7 +134,7 @@ export default function RegistrationForm() {
   };
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '600px', display: 'flex', overflow: 'hidden' }}>
+    <Box sx={{ bgcolor: 'background.default', flex: 1, display: 'flex', overflow: 'hidden' }}>
       <Grid container sx={{ flexGrow: 1 }}>
         {/* Left Side: Guidance & Info (Hidden on mobile) */}
         <Grid 

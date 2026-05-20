@@ -34,12 +34,7 @@ export default function RootLayout({
         style={{
           margin: 0,
           padding: 0,
-          overflowX: "hidden",
-          width: "100%",
-          maxWidth: "100vw",
-          WebkitTextSizeAdjust: "100%",
         }}
-        className="min-h-full flex flex-col"
       >
         <Providers>{children}</Providers>
       </body>
