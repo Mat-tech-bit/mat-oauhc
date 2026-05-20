@@ -13,6 +13,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { registerUser } from '../library/auth';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
